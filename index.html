@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>FINANCEVERSE - Smart Money Challenge</title>
+
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 body{
@@ -48,9 +49,14 @@ input{
 .stat{background:#302b4d;padding:18px;border-radius:12px}
 .stat strong{display:block;font-size:24px;color:#d6a84b}
 footer{text-align:center;padding:30px;color:#827c99}
+table{width:100%;border-collapse:collapse;margin-top:15px}
+td,th{padding:12px;border-bottom:1px solid #45405e;text-align:left}
+th{color:#d6a84b}
 </style>
 </head>
+
 <body>
+
 <header>
  <div class="logo">✦ FINANCEVERSE</div>
  <nav>
@@ -60,6 +66,7 @@ footer{text-align:center;padding:30px;color:#827c99}
 </header>
 
 <main>
+
 <section id="home" class="hero">
  <div class="tag">THE SMART MONEY CHALLENGE</div>
  <h1>PLAY SMART.<br><span>MANAGE MONEY.</span></h1>
@@ -75,7 +82,7 @@ footer{text-align:center;padding:30px;color:#827c99}
 <section id="login" class="panel hidden">
  <h2>Welcome, Player!</h2>
  <p>Masukkan nama untuk memulai petualanganmu.</p>
- <input id="playerName" placeholder="Nama pemain">
+ <input id="playerName" placeholder="Nama pemain" maxlength="30">
  <button class="btn" onclick="startGame()">MASUK GAME</button>
  <p id="error" style="color:#ff9999"></p>
 </section>
@@ -83,12 +90,14 @@ footer{text-align:center;padding:30px;color:#827c99}
 <section id="dashboard" class="panel hidden">
  <h2 id="welcome">Player Dashboard</h2>
  <p id="playerCode"></p>
+
  <div class="stats">
-  <div class="stat">SKOR<strong>0</strong></div>
-  <div class="stat">XP<strong>0</strong></div>
-  <div class="stat">LEVEL<strong>1</strong></div>
-  <div class="stat">BADGE<strong>0</strong></div>
+  <div class="stat">SKOR<strong id="score">0</strong></div>
+  <div class="stat">XP<strong id="xp">0</strong></div>
+  <div class="stat">LEVEL<strong id="level">1</strong></div>
+  <div class="stat">BADGE<strong id="badges">0</strong></div>
  </div>
+
  <p style="margin-top:20px">
   Selamat datang! Petualangan ekonomimu dimulai.
  </p>
@@ -97,10 +106,25 @@ footer{text-align:center;padding:30px;color:#827c99}
 <section id="leaderboard" class="panel">
  <h2>🏆 Global Leaderboard</h2>
  <p>Tempat para pemain menunjukkan pencapaian terbaiknya.</p>
- <p style="margin-top:15px">
-  Leaderboard akan aktif setelah database online terhubung.
- </p>
+
+ <div style="overflow-x:auto">
+  <table>
+   <thead>
+    <tr>
+     <th>Rank</th>
+     <th>Nama</th>
+     <th>Level</th>
+     <th>XP</th>
+     <th>Skor</th>
+    </tr>
+   </thead>
+   <tbody id="leaderboardData">
+    <tr><td colspan="5">Memuat data...</td></tr>
+   </tbody>
+  </table>
+ </div>
 </section>
+
 </main>
 
 <footer>
@@ -108,21 +132,315 @@ footer{text-align:center;padding:30px;color:#827c99}
 </footer>
 
 <script>
-function showLogin(){
- document.getElementById('login').classList.remove('hidden');
- document.getElementById('login').scrollIntoView({behavior:'smooth'});
+
+/* =====================================
+   SUPABASE CONFIGURATION
+
+   GANTI 2 BAGIAN DI BAWAH INI SAJA
+===================================== */
+
+const SUPABASE_URL = "https://pnewwrfwvldrefljgztm.supabase.co";
+
+const SUPABASE_ANON_KEY = "sb_publishable_VNX2JHjMoYVYQnHX37dZJA_8I1ReKyE";
+
+/* =====================================
+   DATABASE CONFIGURATION
+===================================== */
+
+const TABLE_NAME = "financeverse_players";
+
+let currentPlayer = null;
+
+/* =====================================
+   SUPABASE CONNECTION
+===================================== */
+
+async function supabaseRequest(endpoint, options={}){
+
+ if(
+  SUPABASE_URL.includes("GANTI_") ||
+  SUPABASE_ANON_KEY.includes("GANTI_")
+ ){
+  throw new Error("Konfigurasi Supabase belum diisi.");
+ }
+
+ const response = await fetch(
+  SUPABASE_URL.replace(/\/$/,"")+"/rest/v1/"+endpoint,
+  {
+   ...options,
+   headers:{
+    "apikey":SUPABASE_ANON_KEY,
+    "Authorization":"Bearer "+SUPABASE_ANON_KEY,
+    "Content-Type":"application/json",
+    ...options.headers
+   }
+  }
+ );
+
+ if(!response.ok){
+  throw new Error(await response.text());
+ }
+
+ if(response.status===204)return null;
+
+ return response.json();
 }
-function startGame(){
- const name=document.getElementById('playerName').value.trim();
+
+/* =====================================
+   SHOW LOGIN
+===================================== */
+
+function showLogin(){
+ document.getElementById("login").classList.remove("hidden");
+ document.getElementById("login").scrollIntoView({
+  behavior:"smooth"
+ });
+}
+
+/* =====================================
+   GENERATE PLAYER CODE
+===================================== */
+
+function generatePlayerCode(){
+ return "FV-"+Math.random().toString(36).substring(2,8).toUpperCase();
+}
+
+/* =====================================
+   START GAME / LOGIN
+===================================== */
+
+async function startGame(){
+
+ const name=document.getElementById("playerName").value.trim();
+ const error=document.getElementById("error");
+
  if(!name){
-  document.getElementById('error').textContent='Nama wajib diisi!';
+  error.textContent="Nama wajib diisi!";
   return;
  }
- document.getElementById('welcome').textContent='Hi, '+name+'!';
- document.getElementById('playerCode').textContent='Pemain baru · Menunggu database';
- document.getElementById('dashboard').classList.remove('hidden');
- document.getElementById('dashboard').scrollIntoView({behavior:'smooth'});
+
+ if(name.length<2){
+  error.textContent="Nama minimal 2 karakter!";
+  return;
+ }
+
+ const saved=localStorage.getItem("financeversePlayer");
+
+ if(saved){
+  try{
+   const old=JSON.parse(saved);
+
+   if(old.player_name.toLowerCase()===name.toLowerCase()){
+    currentPlayer=old;
+   }
+  }catch(e){}
+ }
+
+ if(!currentPlayer){
+
+  currentPlayer={
+   player_code:generatePlayerCode(),
+   player_name:name,
+   score:0,
+   xp:0,
+   level:1,
+   badges:0
+  };
+
+ }
+
+ savePlayerLocal();
+
+ await syncPlayer();
+
+ document.getElementById("welcome").textContent="Hi, "+name+"!";
+
+ document.getElementById("dashboard").classList.remove("hidden");
+ document.getElementById("login").classList.add("hidden");
+
+ updateDashboard();
+
+ document.getElementById("dashboard").scrollIntoView({
+  behavior:"smooth"
+ });
+
+ loadLeaderboard();
+
 }
+
+/* =====================================
+   SAVE PLAYER LOCAL
+===================================== */
+
+function savePlayerLocal(){
+
+ localStorage.setItem(
+  "financeversePlayer",
+  JSON.stringify(currentPlayer)
+ );
+
+}
+
+/* =====================================
+   SAVE PLAYER TO SUPABASE
+===================================== */
+
+async function syncPlayer(){
+
+ if(!currentPlayer)return;
+
+ try{
+
+  await supabaseRequest(
+   TABLE_NAME+"?on_conflict=player_code",
+   {
+    method:"POST",
+    headers:{
+     "Prefer":"resolution=merge-duplicates,return=minimal"
+    },
+    body:JSON.stringify({
+     player_code:currentPlayer.player_code,
+     player_name:currentPlayer.player_name,
+     score:currentPlayer.score,
+     xp:currentPlayer.xp,
+     level:currentPlayer.level,
+     badges:currentPlayer.badges,
+     updated_at:new Date().toISOString()
+    })
+   }
+  );
+
+  document.getElementById("playerCode").textContent=
+   "Player ID: "+currentPlayer.player_code+" · Database Connected";
+
+ }catch(err){
+
+  console.error("Supabase Error:",err);
+
+  document.getElementById("playerCode").textContent=
+   "Player ID: "+currentPlayer.player_code+" · Database belum tersambung";
+
+ }
+
+}
+
+/* =====================================
+   UPDATE DASHBOARD
+===================================== */
+
+function updateDashboard(){
+
+ if(!currentPlayer)return;
+
+ document.getElementById("score").textContent=currentPlayer.score;
+ document.getElementById("xp").textContent=currentPlayer.xp;
+ document.getElementById("level").textContent=currentPlayer.level;
+ document.getElementById("badges").textContent=currentPlayer.badges;
+
+}
+
+/* =====================================
+   LOAD PLAYER WHEN REOPEN WEBSITE
+===================================== */
+
+function restorePlayer(){
+
+ const saved=localStorage.getItem("financeversePlayer");
+
+ if(!saved)return;
+
+ try{
+
+  currentPlayer=JSON.parse(saved);
+
+  document.getElementById("welcome").textContent=
+   "Hi, "+currentPlayer.player_name+"!";
+
+  document.getElementById("dashboard").classList.remove("hidden");
+
+  updateDashboard();
+
+  syncPlayer();
+
+ }catch(err){
+
+  localStorage.removeItem("financeversePlayer");
+
+ }
+
+}
+
+/* =====================================
+   GLOBAL LEADERBOARD
+===================================== */
+
+async function loadLeaderboard(){
+
+ const tbody=document.getElementById("leaderboardData");
+
+ tbody.innerHTML="<tr><td colspan='5'>Memuat data...</td></tr>";
+
+ try{
+
+  const data=await supabaseRequest(
+   TABLE_NAME+
+   "?select=player_code,player_name,score,xp,level"+
+   "&order=score.desc,xp.desc&limit=10"
+  );
+
+  tbody.innerHTML="";
+
+  if(data.length===0){
+   tbody.innerHTML="<tr><td colspan='5'>Belum ada pemain.</td></tr>";
+   return;
+  }
+
+  data.forEach((player,index)=>{
+
+   const row=document.createElement("tr");
+
+   const rank=index===0?"🥇":
+    index===1?"🥈":
+    index===2?"🥉":
+    index+1;
+
+   [
+    rank,
+    player.player_name,
+    player.level,
+    player.xp,
+    player.score
+   ].forEach(value=>{
+
+    const cell=document.createElement("td");
+    cell.textContent=value;
+    row.appendChild(cell);
+
+   });
+
+   tbody.appendChild(row);
+
+  });
+
+ }catch(err){
+
+  console.error(err);
+
+  tbody.innerHTML=
+   "<tr><td colspan='5'>Gagal memuat leaderboard. Periksa koneksi Supabase.</td></tr>";
+
+ }
+
+}
+
+/* =====================================
+   INITIALIZATION
+===================================== */
+
+restorePlayer();
+
+loadLeaderboard();
+
 </script>
 </body>
 </html>
