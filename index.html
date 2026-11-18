@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FINANCEVERSE - Smart Money Challenge</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+ font-family:Arial,sans-serif;
+ background:#17152e;color:white;
+ min-height:100vh;
+}
+header{
+ padding:20px 7%;
+ display:flex;justify-content:space-between;
+ align-items:center;border-bottom:1px solid #39334f;
+}
+.logo{font-size:22px;font-weight:bold;color:#d6a84b}
+nav a{color:#ddd;text-decoration:none;margin-left:18px}
+main{max-width:1050px;margin:auto;padding:65px 20px}
+.hero{text-align:center;padding:65px 10px}
+.tag{color:#d6a84b;letter-spacing:3px;font-size:12px}
+h1{font-size:clamp(38px,8vw,68px);margin:20px 0}
+h1 span{color:#b69aff}
+p{color:#c5c0d5;line-height:1.7}
+.btn{
+ background:#d6a84b;color:#17152e;
+ border:0;padding:14px 25px;border-radius:10px;
+ font-weight:bold;cursor:pointer;margin-top:25px;
+}
+.btn:hover{opacity:.85}
+.panel{
+ background:#24213e;border:1px solid #45405e;
+ padding:25px;border-radius:18px;margin:20px auto;
+ max-width:500px;
+}
+input{
+ width:100%;padding:14px;margin-top:12px;
+ border-radius:9px;border:1px solid #625a7c;
+ background:#17152e;color:white;
+}
+.hidden{display:none}
+.stats{
+ display:grid;grid-template-columns:repeat(2,1fr);
+ gap:12px;margin-top:20px;
+}
+.stat{background:#302b4d;padding:18px;border-radius:12px}
+.stat strong{display:block;font-size:24px;color:#d6a84b}
+footer{text-align:center;padding:30px;color:#827c99}
+</style>
+</head>
+<body>
+<header>
+ <div class="logo">✦ FINANCEVERSE</div>
+ <nav>
+  <a href="#home">Home</a>
+  <a href="#leaderboard">Leaderboard</a>
+ </nav>
+</header>
+
+<main>
+<section id="home" class="hero">
+ <div class="tag">THE SMART MONEY CHALLENGE</div>
+ <h1>PLAY SMART.<br><span>MANAGE MONEY.</span></h1>
+ <p>
+  Jelajahi dunia ekonomi, selesaikan misi,
+  kumpulkan XP dan jadilah Finance Master!
+ </p>
+ <button class="btn" onclick="showLogin()">
+  MULAI BERMAIN →
+ </button>
+</section>
+
+<section id="login" class="panel hidden">
+ <h2>Welcome, Player!</h2>
+ <p>Masukkan nama untuk memulai petualanganmu.</p>
+ <input id="playerName" placeholder="Nama pemain">
+ <button class="btn" onclick="startGame()">MASUK GAME</button>
+ <p id="error" style="color:#ff9999"></p>
+</section>
+
+<section id="dashboard" class="panel hidden">
+ <h2 id="welcome">Player Dashboard</h2>
+ <p id="playerCode"></p>
+ <div class="stats">
+  <div class="stat">SKOR<strong>0</strong></div>
+  <div class="stat">XP<strong>0</strong></div>
+  <div class="stat">LEVEL<strong>1</strong></div>
+  <div class="stat">BADGE<strong>0</strong></div>
+ </div>
+ <p style="margin-top:20px">
+  Selamat datang! Petualangan ekonomimu dimulai.
+ </p>
+</section>
+
+<section id="leaderboard" class="panel">
+ <h2>🏆 Global Leaderboard</h2>
+ <p>Tempat para pemain menunjukkan pencapaian terbaiknya.</p>
+ <p style="margin-top:15px">
+  Leaderboard akan aktif setelah database online terhubung.
+ </p>
+</section>
+</main>
+
+<footer>
+ FINANCEVERSE © 2026 · THE SMART MONEY CHALLENGE
+</footer>
+
+<script>
+function showLogin(){
+ document.getElementById('login').classList.remove('hidden');
+ document.getElementById('login').scrollIntoView({behavior:'smooth'});
+}
+function startGame(){
+ const name=document.getElementById('playerName').value.trim();
+ if(!name){
+  document.getElementById('error').textContent='Nama wajib diisi!';
+  return;
+ }
+ document.getElementById('welcome').textContent='Hi, '+name+'!';
+ document.getElementById('playerCode').textContent='Pemain baru · Menunggu database';
+ document.getElementById('dashboard').classList.remove('hidden');
+ document.getElementById('dashboard').scrollIntoView({behavior:'smooth'});
+}
+</script>
+</body>
+</html>
