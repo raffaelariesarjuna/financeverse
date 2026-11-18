@@ -3,444 +3,810 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>FINANCEVERSE - Smart Money Challenge</title>
+<title>FINANCEVERSE | Financial Learning Game</title>
 
 <style>
+:root{
+  --bg:#0b0b19;
+  --panel:#15152a;
+  --panel2:#1c1b35;
+  --purple:#9275ff;
+  --gold:#e8bd69;
+  --text:#f5f3ff;
+  --muted:#9694b2;
+  --green:#57d6a0;
+  --red:#ff777f;
+  --border:rgba(255,255,255,.09);
+}
 *{box-sizing:border-box;margin:0;padding:0}
 body{
- font-family:Arial,sans-serif;
- background:#17152e;color:white;
- min-height:100vh;
+  background:radial-gradient(circle at 80% 0%,#29204b 0%,#111124 35%,var(--bg) 75%);
+  color:var(--text);
+  font-family:Arial,sans-serif;
+  min-height:100vh;
 }
+button,input{font:inherit}
+button{cursor:pointer;border:0}
+.container{width:min(1120px,92%);margin:auto}
 header{
- padding:20px 7%;
- display:flex;justify-content:space-between;
- align-items:center;border-bottom:1px solid #39334f;
+  display:flex;justify-content:space-between;align-items:center;
+  padding:23px 0;border-bottom:1px solid var(--border);
 }
-.logo{font-size:22px;font-weight:bold;color:#d6a84b}
-nav a{color:#ddd;text-decoration:none;margin-left:18px}
-main{max-width:1050px;margin:auto;padding:65px 20px}
-.hero{text-align:center;padding:65px 10px}
-.tag{color:#d6a84b;letter-spacing:3px;font-size:12px}
-h1{font-size:clamp(38px,8vw,68px);margin:20px 0}
-h1 span{color:#b69aff}
-p{color:#c5c0d5;line-height:1.7}
-.btn{
- background:#d6a84b;color:#17152e;
- border:0;padding:14px 25px;border-radius:10px;
- font-weight:bold;cursor:pointer;margin-top:25px;
+.logo{font-size:21px;font-weight:900;letter-spacing:2px}
+.logo span{color:var(--gold)}
+nav{display:flex;gap:22px}
+nav button{
+  color:var(--muted);background:none;font-size:13px;
 }
-.btn:hover{opacity:.85}
+nav button:hover{color:white}
+.hero{padding:45px 0 25px}
+.eyebrow{
+  color:var(--gold);font-size:11px;letter-spacing:3px;
+  font-weight:bold;margin-bottom:15px
+}
+h1{font-size:clamp(30px,5vw,48px);line-height:1.13}
+h1 span{
+  background:linear-gradient(90deg,#b6a0ff,#e8bd69);
+  -webkit-background-clip:text;color:transparent
+}
+.subtitle{color:var(--muted);line-height:1.7;margin-top:13px;max-width:570px}
 .panel{
- background:#24213e;border:1px solid #45405e;
- padding:25px;border-radius:18px;margin:20px auto;
- max-width:500px;
+  background:linear-gradient(145deg,rgba(31,29,57,.96),rgba(18,18,37,.97));
+  border:1px solid var(--border);border-radius:19px;
+  padding:23px;box-shadow:0 15px 45px #0003;
 }
+.login-wrap{max-width:470px;margin:38px auto}
+.login-wrap h2{font-size:23px;margin-bottom:9px}
+.login-wrap p{color:var(--muted);font-size:13px;line-height:1.6;margin-bottom:20px}
 input{
- width:100%;padding:14px;margin-top:12px;
- border-radius:9px;border:1px solid #625a7c;
- background:#17152e;color:white;
+  width:100%;padding:15px;border-radius:10px;
+  background:#0d0d20;border:1px solid var(--border);
+  color:white;outline:none;margin-bottom:13px
 }
-.hidden{display:none}
+input:focus{border-color:var(--purple)}
+.primary{
+  background:linear-gradient(110deg,#8d70ff,#b29aff);
+  color:white;padding:14px 21px;border-radius:10px;
+  font-weight:bold;transition:.2s
+}
+.primary:hover{filter:brightness(1.13);transform:translateY(-1px)}
+.primary:disabled{opacity:.5;cursor:not-allowed;transform:none}
+.secondary{
+  background:#292743;color:#ddd7ff;padding:12px 17px;
+  border-radius:9px;border:1px solid var(--border)
+}
+.small{font-size:12px;color:var(--muted);margin-top:12px}
+.hidden{display:none!important}
+.dashboard{padding:22px 0 55px}
+.welcome{
+  display:flex;justify-content:space-between;align-items:center;
+  gap:15px;margin-bottom:22px;flex-wrap:wrap
+}
+.welcome h2{font-size:23px}
+.welcome p{color:var(--muted);font-size:13px;margin-top:6px}
 .stats{
- display:grid;grid-template-columns:repeat(2,1fr);
- gap:12px;margin-top:20px;
+  display:grid;grid-template-columns:repeat(4,1fr);
+  gap:13px;margin-bottom:24px
 }
-.stat{background:#302b4d;padding:18px;border-radius:12px}
-.stat strong{display:block;font-size:24px;color:#d6a84b}
-footer{text-align:center;padding:30px;color:#827c99}
-table{width:100%;border-collapse:collapse;margin-top:15px}
-td,th{padding:12px;border-bottom:1px solid #45405e;text-align:left}
-th{color:#d6a84b}
+.stat{padding:19px;border-radius:15px;background:var(--panel);
+  border:1px solid var(--border)}
+.stat .label{color:var(--muted);font-size:11px}
+.stat .value{font-size:27px;font-weight:bold;margin-top:9px}
+.stat .symbol{font-size:19px;margin-bottom:10px}
+.gold{color:var(--gold)}
+.purple{color:#b7a4ff}
+.green{color:var(--green)}
+.section-head{
+  display:flex;justify-content:space-between;align-items:center;
+  margin:30px 0 15px;gap:10px
+}
+.section-head h3{font-size:18px}
+.section-head p{font-size:12px;color:var(--muted)}
+.progress-box{margin-bottom:23px}
+.progress-info{
+  display:flex;justify-content:space-between;
+  font-size:12px;color:var(--muted);margin-bottom:10px
+}
+.progress-track{height:9px;background:#292741;border-radius:20px;overflow:hidden}
+.progress-fill{
+  height:100%;width:0%;border-radius:20px;
+  background:linear-gradient(90deg,#8c70ff,#e8bd69);
+  transition:width .4s
+}
+.worlds{display:grid;grid-template-columns:repeat(3,1fr);gap:15px}
+.world{
+  padding:20px;border:1px solid var(--border);
+  border-radius:16px;background:var(--panel);
+  display:flex;flex-direction:column;min-height:225px
+}
+.world.locked{opacity:.55}
+.world-icon{font-size:31px;margin-bottom:16px}
+.world h4{font-size:17px;margin-bottom:7px}
+.world p{font-size:12px;color:var(--muted);line-height:1.6;flex:1}
+.world-tag{
+  display:inline-block;margin:13px 0;font-size:10px;
+  padding:6px 9px;border-radius:20px;
+  background:#292641;color:#c6b8ff;width:max-content
+}
+.world button{width:100%;margin-top:10px}
+.world.done{border-color:#57d6a055}
+.leaderboard{margin-top:24px}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th,td{padding:14px 10px;text-align:left;border-bottom:1px solid var(--border)}
+th{color:var(--muted);font-size:11px;font-weight:normal}
+td{color:#eae8f6}
+.me{color:var(--gold);font-weight:bold}
+.quiz-wrap{max-width:760px;margin:25px auto 55px}
+.quiz-top{display:flex;justify-content:space-between;gap:10px;margin-bottom:20px}
+.question-number{color:var(--gold);font-size:12px}
+.quiz-wrap h2{font-size:23px;line-height:1.4;margin:18px 0 23px}
+.answers{display:grid;gap:11px}
+.answer{
+  padding:16px;text-align:left;color:#eeeaff;
+  background:#20203a;border:1px solid var(--border);
+  border-radius:11px;line-height:1.5
+}
+.answer:hover{border-color:var(--purple);background:#292544}
+.answer.correct{border-color:var(--green);background:#17352f}
+.answer.wrong{border-color:var(--red);background:#3a202b}
+.answer:disabled{cursor:default}
+.feedback{
+  padding:15px;border-radius:10px;margin-top:17px;
+  font-size:13px;line-height:1.6
+}
+.feedback.good{background:#17352f;color:#a5f2d0}
+.feedback.bad{background:#3a202b;color:#ffb6bb}
+.quiz-actions{display:flex;justify-content:space-between;align-items:center;margin-top:20px}
+.result{text-align:center;padding:35px 20px}
+.result-icon{font-size:55px;margin-bottom:15px}
+.result h2{font-size:28px;margin-bottom:10px}
+.result p{color:var(--muted);line-height:1.7;margin-bottom:20px}
+footer{
+  text-align:center;color:#77758f;font-size:11px;
+  padding:25px 0;border-top:1px solid var(--border)
+}
+.toast{
+  position:fixed;bottom:20px;left:50%;transform:translateX(-50%);
+  background:#282542;padding:13px 18px;border-radius:10px;
+  font-size:13px;z-index:10;box-shadow:0 8px 30px #0008;
+  max-width:90%;text-align:center
+}
+@media(max-width:700px){
+  .stats{grid-template-columns:repeat(2,1fr)}
+  .worlds{grid-template-columns:1fr}
+  .world{min-height:190px}
+  nav{gap:12px}
+  nav button{font-size:11px}
+  .panel{padding:18px}
+  .stat .value{font-size:23px}
+}
 </style>
 </head>
 
 <body>
-
+<div class="container">
 <header>
- <div class="logo">✦ FINANCEVERSE</div>
- <nav>
-  <a href="#home">Home</a>
-  <a href="#leaderboard">Leaderboard</a>
- </nav>
+  <div class="logo">FINANCE<span>VERSE</span></div>
+  <nav>
+    <button onclick="showDashboard()">Dashboard</button>
+    <button onclick="showLeaderboard()">Leaderboard</button>
+  </nav>
 </header>
 
-<main>
-
-<section id="home" class="hero">
- <div class="tag">THE SMART MONEY CHALLENGE</div>
- <h1>PLAY SMART.<br><span>MANAGE MONEY.</span></h1>
- <p>
-  Jelajahi dunia ekonomi, selesaikan misi,
-  kumpulkan XP dan jadilah Finance Master!
- </p>
- <button class="btn" onclick="showLogin()">
-  MULAI BERMAIN →
- </button>
+<section class="hero" id="hero">
+  <div class="eyebrow">YOUR FINANCIAL ADVENTURE STARTS HERE</div>
+  <h1>PLAY SMART.<br><span>BUILD YOUR FUTURE.</span></h1>
+  <p class="subtitle">
+    Belajar mengelola uang, membuat keputusan finansial,
+    dan memahami investasi melalui pengalaman bermain yang seru.
+  </p>
 </section>
 
-<section id="login" class="panel hidden">
- <h2>Welcome, Player!</h2>
- <p>Masukkan nama untuk memulai petualanganmu.</p>
- <input id="playerName" placeholder="Nama pemain" maxlength="30">
- <button class="btn" onclick="startGame()">MASUK GAME</button>
- <p id="error" style="color:#ff9999"></p>
+<section id="loginSection" class="login-wrap panel">
+  <div class="eyebrow">PLAYER ACCESS</div>
+  <h2>Selamat Datang!</h2>
+  <p>Masukkan nama pemain untuk memulai perjalanan finansialmu.</p>
+  <input id="playerName" type="text" maxlength="35"
+    placeholder="Masukkan nama pemain..." autocomplete="name">
+  <button class="primary" id="loginButton" style="width:100%" onclick="loginPlayer()">
+    MULAI PETUALANGAN →
+  </button>
+  <div class="small">Progress permainan akan tersimpan di akun pemain ini pada perangkat ini.</div>
 </section>
 
-<section id="dashboard" class="panel hidden">
- <h2 id="welcome">Player Dashboard</h2>
- <p id="playerCode"></p>
+<main id="dashboard" class="dashboard hidden">
+  <div class="welcome">
+    <div>
+      <div class="eyebrow">PLAYER DASHBOARD</div>
+      <h2>Halo, <span id="displayName">Player</span>! 👋</h2>
+      <p>Siap meningkatkan kemampuan finansialmu hari ini?</p>
+    </div>
+    <button class="secondary" onclick="logoutPlayer()">Keluar</button>
+  </div>
 
- <div class="stats">
-  <div class="stat">SKOR<strong id="score">0</strong></div>
-  <div class="stat">XP<strong id="xp">0</strong></div>
-  <div class="stat">LEVEL<strong id="level">1</strong></div>
-  <div class="stat">BADGE<strong id="badges">0</strong></div>
- </div>
+  <div class="stats">
+    <div class="stat">
+      <div class="symbol gold">◈</div>
+      <div class="label">TOTAL SCORE</div>
+      <div class="value" id="scoreValue">0</div>
+    </div>
+    <div class="stat">
+      <div class="symbol purple">✦</div>
+      <div class="label">TOTAL XP</div>
+      <div class="value" id="xpValue">0</div>
+    </div>
+    <div class="stat">
+      <div class="symbol green">⬆</div>
+      <div class="label">PLAYER LEVEL</div>
+      <div class="value" id="levelValue">1</div>
+    </div>
+    <div class="stat">
+      <div class="symbol gold">🏆</div>
+      <div class="label">BADGES</div>
+      <div class="value" id="badgeValue">0</div>
+    </div>
+  </div>
 
- <p style="margin-top:20px">
-  Selamat datang! Petualangan ekonomimu dimulai.
- </p>
-</section>
+  <div class="panel progress-box">
+    <div class="progress-info">
+      <span>FINANCIAL JOURNEY PROGRESS</span>
+      <span id="progressText">0 / 3 Worlds</span>
+    </div>
+    <div class="progress-track">
+      <div class="progress-fill" id="progressBar"></div>
+    </div>
+  </div>
 
-<section id="leaderboard" class="panel">
- <h2>🏆 Global Leaderboard</h2>
- <p>Tempat para pemain menunjukkan pencapaian terbaiknya.</p>
+  <div class="section-head">
+    <h3>Explore Your Worlds</h3>
+    <p>3 Worlds · 15 Challenges</p>
+  </div>
 
- <div style="overflow-x:auto">
-  <table>
-   <thead>
-    <tr>
-     <th>Rank</th>
-     <th>Nama</th>
-     <th>Level</th>
-     <th>XP</th>
-     <th>Skor</th>
-    </tr>
-   </thead>
-   <tbody id="leaderboardData">
-    <tr><td colspan="5">Memuat data...</td></tr>
-   </tbody>
-  </table>
- </div>
-</section>
+  <div class="worlds" id="worldCards"></div>
 
+  <section class="panel leaderboard" id="leaderboardSection">
+    <div class="section-head" style="margin-top:0">
+      <div>
+        <h3>🏆 Leaderboard</h3>
+        <p style="margin-top:6px">Pemain dengan score tertinggi</p>
+      </div>
+      <button class="secondary" onclick="loadLeaderboard()">Refresh</button>
+    </div>
+    <div style="overflow-x:auto">
+      <table>
+        <thead><tr><th>RANK</th><th>PLAYER</th><th>SCORE</th><th>LEVEL</th></tr></thead>
+        <tbody id="leaderboardBody">
+          <tr><td colspan="4">Memuat leaderboard...</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
 </main>
 
-<footer>
- FINANCEVERSE © 2026 · THE SMART MONEY CHALLENGE
-</footer>
+<section id="quizSection" class="quiz-wrap hidden">
+  <div class="quiz-top">
+    <button class="secondary" onclick="backToDashboard()">← Dashboard</button>
+    <span class="question-number" id="quizProgress">QUESTION 1 / 5</span>
+  </div>
+  <div class="panel">
+    <div class="eyebrow" id="quizWorld">WORLD 1</div>
+    <div class="progress-track">
+      <div class="progress-fill" id="quizBar"></div>
+    </div>
+    <h2 id="questionText"></h2>
+    <div class="answers" id="answerList"></div>
+    <div id="feedback" class="hidden"></div>
+    <div class="quiz-actions">
+      <span class="small" id="xpHint">+10 XP untuk jawaban benar</span>
+      <button class="primary hidden" id="nextButton" onclick="nextQuestion()">Lanjut →</button>
+    </div>
+  </div>
+</section>
+
+<section id="resultSection" class="quiz-wrap hidden">
+  <div class="panel result">
+    <div class="result-icon" id="resultIcon">🎉</div>
+    <div class="eyebrow">WORLD COMPLETED</div>
+    <h2 id="resultTitle">Well Done!</h2>
+    <p id="resultDescription"></p>
+    <button class="primary" onclick="backToDashboard()">KEMBALI KE DASHBOARD</button>
+  </div>
+</section>
+
+<footer>FINANCEVERSE © 2026 · PLAY SMART. MANAGE MONEY.</footer>
+</div>
+
+<div id="toast" class="toast hidden"></div>
 
 <script>
-
-/* =====================================
-   SUPABASE CONFIGURATION
-
-   GANTI 2 BAGIAN DI BAWAH INI SAJA
-===================================== */
-
+// =======================================
+// 1. MASUKKAN DATA SUPABASE DI SINI
+// =======================================
 const SUPABASE_URL = "https://pnewwrfwvldrefljgztm.supabase.co";
-
 const SUPABASE_ANON_KEY = "sb_publishable_VNX2JHjMoYVYQnHX37dZJA_8I1ReKyE";
 
-/* =====================================
-   DATABASE CONFIGURATION
-===================================== */
+// =======================================
+// 2. DATA PERMAINAN
+// =======================================
+const worlds = [
+{
+  title:"Basic Finance",
+  icon:"💰",
+  difficulty:"EASY",
+  description:"Kenali uang, kebutuhan, keinginan, dan dasar pengelolaan keuangan.",
+  questions:[
+    {
+      q:"Apa yang dimaksud dengan menabung?",
+      a:["Menghabiskan uang","Menyisihkan uang untuk masa depan","Meminjam uang","Membeli barang mahal"],
+      c:1,e:"Menabung adalah menyisihkan sebagian uang untuk kebutuhan atau tujuan di masa depan."
+    },
+    {
+      q:"Manakah yang termasuk kebutuhan primer?",
+      a:["Smartphone terbaru","Makanan","Tas bermerek","Liburan"],
+      c:1,e:"Makanan termasuk kebutuhan primer karena dibutuhkan untuk hidup."
+    },
+    {
+      q:"Apa fungsi utama membuat anggaran keuangan?",
+      a:["Agar uang cepat habis","Mengatur pemasukan dan pengeluaran","Menambah utang","Menghindari menabung"],
+      c:1,e:"Anggaran membantu kita mengatur uang agar pengeluaran tidak melebihi pemasukan."
+    },
+    {
+      q:"Jika mendapatkan uang Rp100.000, tindakan paling bijak adalah...",
+      a:["Menghabiskan semuanya","Membeli semua yang diinginkan","Membagi untuk kebutuhan, tabungan, dan keinginan","Meminjam uang lagi"],
+      c:2,e:"Membagi uang berdasarkan prioritas membantu menjaga kondisi keuangan."
+    },
+    {
+      q:"Apa yang dimaksud dengan dana darurat?",
+      a:["Uang untuk belanja hiburan","Dana untuk kebutuhan tak terduga","Uang untuk hadiah","Dana untuk membeli barang mewah"],
+      c:1,e:"Dana darurat disiapkan untuk menghadapi kondisi tidak terduga."
+    }
+  ]
+},
+{
+  title:"Money Management",
+  icon:"📊",
+  difficulty:"MEDIUM",
+  description:"Pelajari cara mengatur anggaran, utang, prioritas, dan tujuan keuangan.",
+  questions:[
+    {
+      q:"Kamu menerima gaji Rp3.000.000. Pengeluaran bulanan Rp2.000.000. Berapa sisa uangmu?",
+      a:["Rp500.000","Rp1.000.000","Rp1.500.000","Rp2.000.000"],
+      c:1,e:"Rp3.000.000 dikurangi Rp2.000.000 = Rp1.000.000."
+    },
+    {
+      q:"Apa langkah yang tepat sebelum mengambil pinjaman?",
+      a:["Langsung menyetujui","Memeriksa bunga dan kemampuan membayar","Mengabaikan cicilan","Meminjam sebanyak mungkin"],
+      c:1,e:"Pastikan bunga, biaya, tenor, dan kemampuan membayar sebelum berutang."
+    },
+    {
+      q:"Metode 50/30/20 secara umum membagi pendapatan menjadi...",
+      a:["50% kebutuhan, 30% keinginan, 20% tabungan","50% hiburan, 30% utang, 20% belanja","50% tabungan, 30% pajak, 20% hiburan","Semua untuk kebutuhan"],
+      c:0,e:"Metode ini merupakan panduan: 50% kebutuhan, 30% keinginan, dan 20% tabungan atau tujuan keuangan."
+    },
+    {
+      q:"Mengapa penting mencatat pengeluaran?",
+      a:["Supaya bisa belanja lebih banyak","Untuk mengetahui ke mana uang digunakan","Agar tidak perlu membuat anggaran","Untuk menambah pengeluaran"],
+      c:1,e:"Catatan pengeluaran membantu mengevaluasi kebiasaan dan mengontrol keuangan."
+    },
+    {
+      q:"Jika cicilan utang terlalu besar dibandingkan pendapatan, sebaiknya...",
+      a:["Menambah pinjaman","Mengabaikannya","Mengevaluasi anggaran dan mengurangi utang","Belanja lebih banyak"],
+      c:2,e:"Evaluasi anggaran dan susun strategi pembayaran agar beban utang lebih terkendali."
+    }
+  ]
+},
+{
+  title:"Investment Master",
+  icon:"📈",
+  difficulty:"HARD",
+  description:"Kenali investasi, risiko, diversifikasi, dan pertumbuhan aset.",
+  questions:[
+    {
+      q:"Apa tujuan utama investasi?",
+      a:["Menghabiskan uang","Mengembangkan nilai aset dalam jangka waktu tertentu","Menghindari semua risiko","Mendapat keuntungan pasti"],
+      c:1,e:"Investasi bertujuan mengembangkan aset, tetapi hasil dan risikonya berbeda-beda."
+    },
+    {
+      q:"Apa yang dimaksud dengan diversifikasi?",
+      a:["Menaruh semua uang di satu aset","Membagi investasi ke beberapa jenis aset","Menjual seluruh aset","Menghindari perencanaan"],
+      c:1,e:"Diversifikasi membantu menyebarkan risiko dengan tidak bergantung pada satu aset."
+    },
+    {
+      q:"Manakah pernyataan yang benar tentang investasi?",
+      a:["Semua investasi pasti untung","Investasi tidak memiliki risiko","Potensi keuntungan selalu disertai risiko","Harga aset selalu naik"],
+      c:2,e:"Setiap investasi memiliki risiko. Keuntungan tidak pernah dijamin."
+    },
+    {
+      q:"Apa yang dimaksud dengan inflasi?",
+      a:["Penurunan harga semua barang","Kenaikan harga barang dan jasa secara umum","Kenaikan gaji setiap bulan","Penurunan jumlah uang"],
+      c:1,e:"Inflasi adalah kenaikan tingkat harga barang dan jasa secara umum dalam suatu periode."
+    },
+    {
+      q:"Sebelum berinvestasi, hal yang paling penting dilakukan adalah...",
+      a:["Mengikuti tren tanpa riset","Menggunakan seluruh dana darurat","Memahami produk, risiko, dan tujuan investasi","Meminjam uang sebanyak mungkin"],
+      c:2,e:"Pahami produk investasi, profil risiko, biaya, dan tujuan sebelum mengambil keputusan."
+    }
+  ]
+}
+];
 
-const TABLE_NAME = "financeverse_players";
+// =======================================
+// 3. DATA DAN STATUS PEMAIN
+// =======================================
+let player = null;
+let currentWorld = 0;
+let currentQuestion = 0;
+let correctAnswers = 0;
+let alreadyCompleted = false;
+let answered = false;
 
-let currentPlayer = null;
+const storageKey = "financeverse_player_v2";
 
-/* =====================================
-   SUPABASE CONNECTION
-===================================== */
+function configReady(){
+  return SUPABASE_URL.startsWith("https://") &&
+    SUPABASE_ANON_KEY !== "sb_publishable_VNX2JHjMoYVYQnHX37dZJA_8I1ReKyE" &&
+    SUPABASE_ANON_KEY.length > 10;
+}
 
-async function supabaseRequest(endpoint, options={}){
-
- if(
-  SUPABASE_URL.includes("GANTI_") ||
-  SUPABASE_ANON_KEY.includes("GANTI_")
- ){
-  throw new Error("Konfigurasi Supabase belum diisi.");
- }
-
- const response = await fetch(
-  SUPABASE_URL.replace(/\/$/,"")+"/rest/v1/"+endpoint,
-  {
-   ...options,
-   headers:{
+function headers(extra={}){
+  return {
     "apikey":SUPABASE_ANON_KEY,
     "Authorization":"Bearer "+SUPABASE_ANON_KEY,
     "Content-Type":"application/json",
-    ...options.headers
-   }
-  }
- );
-
- if(!response.ok){
-  throw new Error(await response.text());
- }
-
- if(response.status===204)return null;
-
- return response.json();
-}
-
-/* =====================================
-   SHOW LOGIN
-===================================== */
-
-function showLogin(){
- document.getElementById("login").classList.remove("hidden");
- document.getElementById("login").scrollIntoView({
-  behavior:"smooth"
- });
-}
-
-/* =====================================
-   GENERATE PLAYER CODE
-===================================== */
-
-function generatePlayerCode(){
- return "FV-"+Math.random().toString(36).substring(2,8).toUpperCase();
-}
-
-/* =====================================
-   START GAME / LOGIN
-===================================== */
-
-async function startGame(){
-
- const name=document.getElementById("playerName").value.trim();
- const error=document.getElementById("error");
-
- if(!name){
-  error.textContent="Nama wajib diisi!";
-  return;
- }
-
- if(name.length<2){
-  error.textContent="Nama minimal 2 karakter!";
-  return;
- }
-
- const saved=localStorage.getItem("financeversePlayer");
-
- if(saved){
-  try{
-   const old=JSON.parse(saved);
-
-   if(old.player_name.toLowerCase()===name.toLowerCase()){
-    currentPlayer=old;
-   }
-  }catch(e){}
- }
-
- if(!currentPlayer){
-
-  currentPlayer={
-   player_code:generatePlayerCode(),
-   player_name:name,
-   score:0,
-   xp:0,
-   level:1,
-   badges:0
+    ...extra
   };
-
- }
-
- savePlayerLocal();
-
- await syncPlayer();
-
- document.getElementById("welcome").textContent="Hi, "+name+"!";
-
- document.getElementById("dashboard").classList.remove("hidden");
- document.getElementById("login").classList.add("hidden");
-
- updateDashboard();
-
- document.getElementById("dashboard").scrollIntoView({
-  behavior:"smooth"
- });
-
- loadLeaderboard();
-
 }
 
-/* =====================================
-   SAVE PLAYER LOCAL
-===================================== */
-
-function savePlayerLocal(){
-
- localStorage.setItem(
-  "financeversePlayer",
-  JSON.stringify(currentPlayer)
- );
-
-}
-
-/* =====================================
-   SAVE PLAYER TO SUPABASE
-===================================== */
-
-async function syncPlayer(){
-
- if(!currentPlayer)return;
-
- try{
-
-  await supabaseRequest(
-   TABLE_NAME+"?on_conflict=player_code",
-   {
-    method:"POST",
-    headers:{
-     "Prefer":"resolution=merge-duplicates,return=minimal"
-    },
-    body:JSON.stringify({
-     player_code:currentPlayer.player_code,
-     player_name:currentPlayer.player_name,
-     score:currentPlayer.score,
-     xp:currentPlayer.xp,
-     level:currentPlayer.level,
-     badges:currentPlayer.badges,
-     updated_at:new Date().toISOString()
-    })
-   }
-  );
-
-  document.getElementById("playerCode").textContent=
-   "Player ID: "+currentPlayer.player_code+" · Database Connected";
-
- }catch(err){
-
-  console.error("Supabase Error:",err);
-
-  document.getElementById("playerCode").textContent=
-   "Player ID: "+currentPlayer.player_code+" · Database belum tersambung";
-
- }
-
-}
-
-/* =====================================
-   UPDATE DASHBOARD
-===================================== */
-
-function updateDashboard(){
-
- if(!currentPlayer)return;
-
- document.getElementById("score").textContent=currentPlayer.score;
- document.getElementById("xp").textContent=currentPlayer.xp;
- document.getElementById("level").textContent=currentPlayer.level;
- document.getElementById("badges").textContent=currentPlayer.badges;
-
-}
-
-/* =====================================
-   LOAD PLAYER WHEN REOPEN WEBSITE
-===================================== */
-
-function restorePlayer(){
-
- const saved=localStorage.getItem("financeversePlayer");
-
- if(!saved)return;
-
- try{
-
-  currentPlayer=JSON.parse(saved);
-
-  document.getElementById("welcome").textContent=
-   "Hi, "+currentPlayer.player_name+"!";
-
-  document.getElementById("dashboard").classList.remove("hidden");
-
-  updateDashboard();
-
-  syncPlayer();
-
- }catch(err){
-
-  localStorage.removeItem("financeversePlayer");
-
- }
-
-}
-
-/* =====================================
-   GLOBAL LEADERBOARD
-===================================== */
-
-async function loadLeaderboard(){
-
- const tbody=document.getElementById("leaderboardData");
-
- tbody.innerHTML="<tr><td colspan='5'>Memuat data...</td></tr>";
-
- try{
-
-  const data=await supabaseRequest(
-   TABLE_NAME+
-   "?select=player_code,player_name,score,xp,level"+
-   "&order=score.desc,xp.desc&limit=10"
-  );
-
-  tbody.innerHTML="";
-
-  if(data.length===0){
-   tbody.innerHTML="<tr><td colspan='5'>Belum ada pemain.</td></tr>";
-   return;
+async function dbRequest(path,options={}){
+  if(!configReady()) throw new Error("URL atau Publishable Key Supabase belum diisi.");
+  const response = await fetch(SUPABASE_URL+"/rest/v1/"+path,{
+    ...options,
+    headers:headers(options.headers||{})
+  });
+  if(!response.ok){
+    const error=await response.text();
+    throw new Error(error||"Supabase request gagal.");
   }
+  if(response.status===204) return null;
+  return response.json();
+}
 
-  data.forEach((player,index)=>{
+function showToast(message){
+  const el=document.getElementById("toast");
+  el.textContent=message;
+  el.classList.remove("hidden");
+  setTimeout(()=>el.classList.add("hidden"),3000);
+}
 
-   const row=document.createElement("tr");
+function levelFromXP(xp){
+  return Math.floor(xp/50)+1;
+}
 
-   const rank=index===0?"🥇":
-    index===1?"🥈":
-    index===2?"🥉":
-    index+1;
+function badgesFromWorlds(completed){
+  return completed;
+}
 
-   [
-    rank,
-    player.player_name,
-    player.level,
-    player.xp,
-    player.score
-   ].forEach(value=>{
+async function loginPlayer(){
+  const name=document.getElementById("playerName").value.trim();
+  if(!name){showToast("Masukkan nama pemain terlebih dahulu.");return;}
 
-    const cell=document.createElement("td");
-    cell.textContent=value;
-    row.appendChild(cell);
+  const btn=document.getElementById("loginButton");
+  btn.disabled=true;
+  btn.textContent="MEMUAT...";
 
-   });
+  try{
+    const saved=localStorage.getItem(storageKey);
+    let playerCode=null;
 
-   tbody.appendChild(row);
+    if(saved){
+      try{
+        const old=JSON.parse(saved);
+        if(old.name.toLowerCase()===name.toLowerCase()) playerCode=old.code;
+      }catch(e){}
+    }
 
+    if(!playerCode) playerCode=crypto.randomUUID();
+
+    const rows=await dbRequest(
+      "financeverse_players?player_code=eq."+encodeURIComponent(playerCode)+"&select=*"
+    );
+
+    if(rows.length){
+      player=rows[0];
+      await dbRequest("financeverse_players?player_code=eq."+encodeURIComponent(playerCode),{
+        method:"PATCH",
+        headers:{"Prefer":"return=minimal"},
+        body:JSON.stringify({player_name:name})
+      });
+      player.player_name=name;
+    }else{
+      const inserted=await dbRequest("financeverse_players",{
+        method:"POST",
+        headers:{"Prefer":"return=representation"},
+        body:JSON.stringify({
+          player_code:playerCode,
+          player_name:name,
+          score:0,xp:0,level:1,badges:0,completed_worlds:0
+        })
+      });
+      player=inserted[0];
+    }
+
+    localStorage.setItem(storageKey,JSON.stringify({code:playerCode,name}));
+    openDashboard();
+  }catch(error){
+    console.error(error);
+    showToast("Gagal terhubung ke Supabase. Periksa URL, Key, dan Policies.");
+  }finally{
+    btn.disabled=false;
+    btn.textContent="MULAI PETUALANGAN →";
+  }
+}
+
+function openDashboard(){
+  document.getElementById("hero").classList.add("hidden");
+  document.getElementById("loginSection").classList.add("hidden");
+  document.getElementById("quizSection").classList.add("hidden");
+  document.getElementById("resultSection").classList.add("hidden");
+  document.getElementById("dashboard").classList.remove("hidden");
+  renderDashboard();
+  loadLeaderboard();
+}
+
+function renderDashboard(){
+  if(!player)return;
+  const completed=Number(player.completed_worlds)||0;
+  const xp=Number(player.xp)||0;
+  const score=Number(player.score)||0;
+  const level=levelFromXP(xp);
+
+  document.getElementById("displayName").textContent=player.player_name;
+  document.getElementById("scoreValue").textContent=score;
+  document.getElementById("xpValue").textContent=xp;
+  document.getElementById("levelValue").textContent=level;
+  document.getElementById("badgeValue").textContent=badgesFromWorlds(completed);
+  document.getElementById("progressText").textContent=completed+" / 3 Worlds";
+  document.getElementById("progressBar").style.width=(completed/3*100)+"%";
+
+  const cards=document.getElementById("worldCards");
+  cards.innerHTML="";
+
+  worlds.forEach((world,index)=>{
+    const done=index<completed;
+    const unlocked=index===completed;
+    const locked=index>completed;
+    const div=document.createElement("div");
+    div.className="world"+(locked?" locked":"")+(done?" done":"");
+    div.innerHTML=`
+      <div class="world-icon">${world.icon}</div>
+      <h4>${world.title}</h4>
+      <p>${world.description}</p>
+      <span class="world-tag">${done?"✓ COMPLETED":locked?"🔒 LOCKED":world.difficulty}</span>
+      <button class="${locked?"secondary":"primary"}"
+        ${locked?"disabled":""}
+        onclick="startWorld(${index})">
+        ${done?"ULANGI WORLD":locked?"BELUM TERBUKA":"MULAI WORLD →"}
+      </button>`;
+    cards.appendChild(div);
   });
 
- }catch(err){
-
-  console.error(err);
-
-  tbody.innerHTML=
-   "<tr><td colspan='5'>Gagal memuat leaderboard. Periksa koneksi Supabase.</td></tr>";
-
- }
-
+  if(completed===3){
+    document.getElementById("progressText").textContent="ALL WORLDS COMPLETED";
+  }
 }
 
-/* =====================================
-   INITIALIZATION
-===================================== */
+async function savePlayer(){
+  const completed=Number(player.completed_worlds)||0;
+  const xp=Number(player.xp)||0;
+  player.level=levelFromXP(xp);
+  player.badges=badgesFromWorlds(completed);
 
-restorePlayer();
+  await dbRequest("financeverse_players?player_code=eq."+encodeURIComponent(player.player_code),{
+    method:"PATCH",
+    headers:{"Prefer":"return=minimal"},
+    body:JSON.stringify({
+      player_name:player.player_name,
+      score:player.score,
+      xp:player.xp,
+      level:player.level,
+      badges:player.badges,
+      completed_worlds:player.completed_worlds,
+      updated_at:new Date().toISOString()
+    })
+  });
+}
 
-loadLeaderboard();
+function startWorld(index){
+  const completed=Number(player.completed_worlds)||0;
+  if(index>completed)return;
+  currentWorld=index;
+  currentQuestion=0;
+  correctAnswers=0;
+  alreadyCompleted=index<completed;
+  document.getElementById("dashboard").classList.add("hidden");
+  document.getElementById("resultSection").classList.add("hidden");
+  document.getElementById("quizSection").classList.remove("hidden");
+  showQuestion();
+  window.scrollTo(0,0);
+}
 
+function showQuestion(){
+  answered=false;
+  const world=worlds[currentWorld];
+  const q=world.questions[currentQuestion];
+  document.getElementById("quizWorld").textContent="WORLD "+(currentWorld+1)+" · "+world.title;
+  document.getElementById("quizProgress").textContent=
+    "QUESTION "+(currentQuestion+1)+" / "+world.questions.length;
+  document.getElementById("quizBar").style.width=
+    (currentQuestion/world.questions.length*100)+"%";
+  document.getElementById("questionText").textContent=q.q;
+  document.getElementById("feedback").className="hidden";
+  document.getElementById("feedback").textContent="";
+  document.getElementById("nextButton").classList.add("hidden");
+  document.getElementById("xpHint").textContent=alreadyCompleted?
+    "Mode latihan · XP tidak bertambah":"+10 XP untuk jawaban benar";
+
+  const list=document.getElementById("answerList");
+  list.innerHTML="";
+  q.a.forEach((answer,index)=>{
+    const btn=document.createElement("button");
+    btn.className="answer";
+    btn.textContent=String.fromCharCode(65+index)+". "+answer;
+    btn.onclick=()=>chooseAnswer(index,btn);
+    list.appendChild(btn);
+  });
+}
+
+function chooseAnswer(index,button){
+  if(answered)return;
+  answered=true;
+  const q=worlds[currentWorld].questions[currentQuestion];
+  const buttons=document.querySelectorAll(".answer");
+  buttons.forEach((b,i)=>{
+    b.disabled=true;
+    if(i===q.c)b.classList.add("correct");
+  });
+
+  const correct=index===q.c;
+  if(correct){
+    correctAnswers++;
+    if(!alreadyCompleted){
+      player.xp=Number(player.xp)+10;
+      player.score=Number(player.score)+10;
+    }
+  }else{
+    button.classList.add("wrong");
+  }
+
+  const feedback=document.getElementById("feedback");
+  feedback.className="feedback "+(correct?"good":"bad");
+  feedback.textContent=(correct?"✓ Benar! ":"✕ Belum tepat. ")+q.e;
+  document.getElementById("nextButton").classList.remove("hidden");
+  document.getElementById("xpHint").textContent=
+    correct&&!alreadyCompleted?"+10 XP diperoleh!":"Tetap semangat!";
+}
+
+async function nextQuestion(){
+  currentQuestion++;
+  if(currentQuestion<worlds[currentWorld].questions.length){
+    showQuestion();
+    return;
+  }
+  await finishWorld();
+}
+
+async function finishWorld(){
+  const wasAlreadyCompleted=alreadyCompleted;
+  if(!wasAlreadyCompleted){
+    player.completed_worlds=Math.max(
+      Number(player.completed_worlds)||0,currentWorld+1
+    );
+  }
+  try{
+    await savePlayer();
+  }catch(error){
+    console.error(error);
+    showToast("Progres belum tersimpan. Periksa koneksi internet.");
+  }
+
+  document.getElementById("quizSection").classList.add("hidden");
+  document.getElementById("resultSection").classList.remove("hidden");
+
+  const total=worlds[currentWorld].questions.length;
+  const completed=Number(player.completed_worlds)||0;
+  document.getElementById("resultIcon").textContent=
+    completed===3?"🏆":"🎉";
+  document.getElementById("resultTitle").textContent=
+    wasAlreadyCompleted?"Latihan Selesai!":"World Completed!";
+  document.getElementById("resultDescription").textContent=
+    "Kamu menjawab "+correctAnswers+" dari "+total+
+    " pertanyaan dengan benar. "+
+    (wasAlreadyCompleted?
+      "Ini adalah mode latihan, XP tidak bertambah.":
+      "Kamu mendapatkan "+(correctAnswers*10)+" XP. "+
+      (completed===3?
+        "Selamat! Kamu telah menyelesaikan FINANCEVERSE dan meraih gelar Finance Master!":
+        "Lanjutkan perjalananmu untuk membuka dunia berikutnya."));
+}
+
+function backToDashboard(){
+  document.getElementById("quizSection").classList.add("hidden");
+  document.getElementById("resultSection").classList.add("hidden");
+  document.getElementById("dashboard").classList.remove("hidden");
+  renderDashboard();
+  loadLeaderboard();
+  window.scrollTo(0,0);
+}
+
+function showDashboard(){
+  if(!player)return;
+  backToDashboard();
+}
+
+function showLeaderboard(){
+  if(!player)return;
+  document.getElementById("leaderboardSection").scrollIntoView({behavior:"smooth"});
+}
+
+async function loadLeaderboard(){
+  if(!player)return;
+  const body=document.getElementById("leaderboardBody");
+  try{
+    const rows=await dbRequest(
+      "financeverse_players?select=player_code,player_name,score,level&order=score.desc&limit=10"
+    );
+    body.innerHTML="";
+    if(!rows.length){
+      body.innerHTML="<tr><td colspan='4'>Belum ada pemain.</td></tr>";
+      return;
+    }
+    rows.forEach((p,i)=>{
+      const tr=document.createElement("tr");
+      const isMe=p.player_code===player.player_code;
+      if(isMe)tr.className="me";
+      tr.innerHTML=`
+        <td>${["🥇","🥈","🥉"][i]||("#"+(i+1))}</td>
+        <td></td><td>${Number(p.score)||0}</td><td>${Number(p.level)||1}</td>`;
+      tr.children[1].textContent=p.player_name;
+      body.appendChild(tr);
+    });
+  }catch(error){
+    console.error(error);
+    body.innerHTML="<tr><td colspan='4'>Leaderboard belum dapat dimuat.</td></tr>";
+  }
+}
+
+function logoutPlayer(){
+  if(!confirm("Keluar dari akun pemain ini? Data permainan tetap tersimpan."))return;
+  player=null;
+  document.getElementById("dashboard").classList.add("hidden");
+  document.getElementById("hero").classList.remove("hidden");
+  document.getElementById("loginSection").classList.remove("hidden");
+  document.getElementById("playerName").value="";
+}
+
+// =======================================
+// 4. MEMBUKA PEMAIN YANG PERNAH LOGIN
+// =======================================
+async function restorePlayer(){
+  const saved=localStorage.getItem(storageKey);
+  if(!saved)return;
+  try{
+    const data=JSON.parse(saved);
+    if(!data.code||!configReady())return;
+    const rows=await dbRequest(
+      "financeverse_players?player_code=eq."+encodeURIComponent(data.code)+"&select=*"
+    );
+    if(rows.length){
+      player=rows[0];
+      openDashboard();
+    }
+  }catch(error){
+    console.log("Belum dapat memulihkan pemain:",error);
+  }
+}
+
+if(configReady())restorePlayer();
 </script>
 </body>
 </html>
