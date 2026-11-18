@@ -535,8 +535,8 @@ async function loginPlayer(){
     localStorage.setItem(storageKey,JSON.stringify({code:playerCode,name}));
     openDashboard();
   }catch(error){
-    console.error(error);
-    showToast("Gagal terhubung ke Supabase. Periksa URL, Key, dan Policies.");
+    console.error("SUPABASE ERROR:", error);
+    showToast("Error: " + error.message.slice(0,180));
   }finally{
     btn.disabled=false;
     btn.textContent="MULAI PETUALANGAN →";
