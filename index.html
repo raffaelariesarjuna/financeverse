@@ -535,9 +535,9 @@ async function loginPlayer(){
     localStorage.setItem(storageKey,JSON.stringify({code:playerCode,name}));
     openDashboard();
   }catch(error){
-    console.error("SUPABASE ERROR:", error);
-    showToast("Error: " + error.message.slice(0,180));
-  }finally{
+  console.error("SUPABASE ERROR:", error);
+  showToast("ERROR: " + (error.message || String(error)).slice(0,180));
+}finally{
     btn.disabled=false;
     btn.textContent="MULAI PETUALANGAN →";
   }
