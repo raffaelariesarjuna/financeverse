@@ -1,2 +1,2 @@
 # financeverse
-FINANCEVERSE - The Smart Money Challenge
+FINANCEVERSE - The Digital Finance Challenge
