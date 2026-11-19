@@ -7,101 +7,659 @@
 
 <style>
 :root{
- --bg:#0b0b19;--panel:#17162d;--panel2:#211e40;
- --purple:#9275ff;--gold:#e8bd69;--text:#f4f1ff;
- --muted:#aaa5c5;--green:#55d6a2;--red:#ff6b83;
- --line:rgba(255,255,255,.09)
+ --bg:#0b0b19;
+ --panel:#17162d;
+ --panel2:#211e40;
+ --purple:#9275ff;
+ --gold:#e8bd69;
+ --text:#f4f1ff;
+ --muted:#aaa5c5;
+ --green:#55d6a2;
+ --red:#ff6b83;
+ --line:rgba(255,255,255,.09);
 }
 *{box-sizing:border-box;margin:0;padding:0}
+
+html{scroll-behavior:smooth}
+
 body{
- font-family:Arial,sans-serif;color:var(--text);min-height:100vh;
- background:radial-gradient(circle at top,#28204f 0,#0b0b19 55%)
+ font-family:Arial,sans-serif;
+ color:var(--text);
+ min-height:100vh;
+ overflow-x:hidden;
+ background:
+  radial-gradient(ellipse at 50% -10%,#382967 0,#17132e 38%,#0b0b19 75%);
 }
+
 button,input{font:inherit}
 button{cursor:pointer;border:0}
-.container{width:min(1100px,92%);margin:auto;padding:25px 0 50px}
+
+.container{
+ width:min(1100px,92%);
+ margin:auto;
+ padding:25px 0 50px;
+ position:relative;
+ z-index:1;
+}
+
 .hidden{display:none!important}
-.topbar{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:28px}
-.logo{font-size:23px;font-weight:900;letter-spacing:2px}
+
+/* GALAXY BACKGROUND */
+body::before{
+ content:"";
+ position:fixed;
+ inset:0;
+ pointer-events:none;
+ z-index:0;
+ opacity:.48;
+ background-image:
+  radial-gradient(2px 2px at 20% 30%,#fff 50%,transparent 100%),
+  radial-gradient(2px 2px at 75% 20%,#e8bd69 50%,transparent 100%),
+  radial-gradient(2px 2px at 50% 70%,#9275ff 50%,transparent 100%),
+  radial-gradient(1px 1px at 90% 80%,#fff 50%,transparent 100%),
+  radial-gradient(2px 2px at 10% 85%,#9275ff 50%,transparent 100%);
+ background-size:250px 250px;
+ animation:starMove 45s linear infinite;
+}
+
+body::after{
+ content:"";
+ position:fixed;
+ inset:0;
+ pointer-events:none;
+ z-index:0;
+ background:
+  radial-gradient(ellipse at 15% 20%,#9275ff16,transparent 45%),
+  radial-gradient(ellipse at 85% 70%,#e8bd6910,transparent 40%);
+}
+
+@keyframes starMove{
+ from{background-position:0 0}
+ to{background-position:250px 500px}
+}
+
+@keyframes float{
+ 0%,100%{transform:translateY(0)}
+ 50%{transform:translateY(-9px)}
+}
+
+@keyframes glow{
+ 0%,100%{box-shadow:0 0 15px #9275ff20}
+ 50%{box-shadow:0 0 30px #9275ff55}
+}
+
+@keyframes fadeUp{
+ from{opacity:0;transform:translateY(22px)}
+ to{opacity:1;transform:translateY(0)}
+}
+
+@keyframes fadeIn{
+ from{opacity:0}
+ to{opacity:1}
+}
+
+@keyframes popIn{
+ 0%{opacity:0;transform:scale(.88)}
+ 70%{transform:scale(1.04)}
+ 100%{opacity:1;transform:scale(1)}
+}
+
+@keyframes pulseTimer{
+ 0%,100%{filter:brightness(1)}
+ 50%{filter:brightness(1.6)}
+}
+
+@keyframes shake{
+ 0%,100%{transform:translateX(0)}
+ 20%,60%{transform:translateX(-5px)}
+ 40%,80%{transform:translateX(5px)}
+}
+
+@keyframes correctPulse{
+ 0%{transform:scale(1)}
+ 50%{transform:scale(1.025)}
+ 100%{transform:scale(1)}
+}
+
+@keyframes rotateGlow{
+ from{transform:rotate(0deg)}
+ to{transform:rotate(360deg)}
+}
+
+/* TOPBAR */
+.topbar{
+ display:flex;
+ justify-content:space-between;
+ align-items:center;
+ gap:12px;
+ margin-bottom:28px;
+ animation:fadeUp .7s ease both;
+}
+
+.logo{
+ font-size:23px;
+ font-weight:900;
+ letter-spacing:2px;
+ text-shadow:0 0 20px #9275ff70;
+}
+
 .logo span{color:var(--gold)}
-.tagline{font-size:10px;color:var(--muted);letter-spacing:2px;margin-top:5px}
+
+.tagline{
+ font-size:10px;
+ color:var(--muted);
+ letter-spacing:2px;
+ margin-top:5px;
+}
+
+/* PANEL */
 .panel{
- background:linear-gradient(145deg,#211e40,#151429);
- border:1px solid var(--line);border-radius:20px;padding:24px;
- box-shadow:0 18px 50px #0003
+ background:linear-gradient(145deg,#211e40ed,#151429f2);
+ border:1px solid var(--line);
+ border-radius:20px;
+ padding:24px;
+ box-shadow:0 18px 50px #0004;
+ backdrop-filter:blur(12px);
 }
-.hero{text-align:center;padding:45px 22px}
-.hero h1{font-size:clamp(30px,6vw,53px);margin:14px 0}
+
+.hero{
+ text-align:center;
+ padding:45px 22px;
+ position:relative;
+ overflow:hidden;
+}
+
+.hero::before{
+ content:"";
+ position:absolute;
+ width:260px;
+ height:260px;
+ border-radius:50%;
+ background:radial-gradient(circle,#9275ff20,transparent 70%);
+ top:-100px;
+ left:50%;
+ transform:translateX(-50%);
+ pointer-events:none;
+}
+
+.hero h1{
+ font-size:clamp(30px,6vw,53px);
+ margin:14px 0;
+ position:relative;
+}
+
 .hero h1 span{color:var(--gold)}
-.hero p{color:var(--muted);line-height:1.7;max-width:650px;margin:auto}
-.eyebrow{font-size:11px;color:var(--gold);font-weight:bold;letter-spacing:2.5px}
-.loginbox{max-width:440px;margin:25px auto 0;text-align:left}
-.small{font-size:12px;color:var(--muted);line-height:1.6}
+
+.hero p{
+ color:var(--muted);
+ line-height:1.7;
+ max-width:650px;
+ margin:auto;
+}
+
+.eyebrow{
+ font-size:11px;
+ color:var(--gold);
+ font-weight:bold;
+ letter-spacing:2.5px;
+}
+
+.loginbox{
+ max-width:440px;
+ margin:25px auto 0;
+ text-align:left;
+ position:relative;
+}
+
+.small{
+ font-size:12px;
+ color:var(--muted);
+ line-height:1.6;
+}
+
 .input{
- width:100%;padding:15px;border-radius:12px;margin:12px 0;
- background:#101024;border:1px solid #383354;color:white;outline:none
+ width:100%;
+ padding:15px;
+ border-radius:12px;
+ margin:12px 0;
+ background:#101024;
+ border:1px solid #383354;
+ color:white;
+ outline:none;
+ transition:.25s;
 }
-.input:focus{border-color:var(--purple)}
+
+.input:focus{
+ border-color:var(--purple);
+ box-shadow:0 0 15px #9275ff40;
+}
+
+/* BUTTON */
 .btn{
- padding:13px 18px;border-radius:12px;font-weight:bold;color:white;
+ padding:13px 18px;
+ border-radius:12px;
+ font-weight:bold;
+ color:white;
  background:linear-gradient(135deg,var(--purple),#684bce);
- transition:.2s
+ transition:transform .25s,filter .25s,box-shadow .25s;
 }
-.btn:hover{transform:translateY(-2px);filter:brightness(1.1)}
-.btn.gold{background:linear-gradient(135deg,#f0cf83,#bd8e3c);color:#241a0a}
-.btn.secondary{background:#292642;border:1px solid var(--line)}
-.btn:disabled{opacity:.5;cursor:not-allowed;transform:none}
-.section-title{font-size:24px;margin:8px 0}
-.section-sub{font-size:13px;color:var(--muted);line-height:1.6}
-.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:22px 0}
-.stat{background:#111126;border:1px solid var(--line);padding:16px;border-radius:14px}
-.stat strong{display:block;font-size:24px;color:var(--gold);margin-bottom:5px}
-.stat span{font-size:11px;color:var(--muted)}
-.progress-wrap{height:7px;background:#302d49;border-radius:20px;overflow:hidden;margin-top:8px}
-.progress-bar{height:100%;background:linear-gradient(90deg,var(--purple),var(--gold));width:0}
-.world-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:15px;margin-top:22px}
-.world-card{background:linear-gradient(145deg,#242044,#151429);border:1px solid var(--line);border-radius:17px;padding:20px;display:flex;flex-direction:column;gap:12px}
-.world-icon{font-size:32px}
-.world-card h3{font-size:18px;margin-top:5px}
-.world-card p{font-size:12px;color:var(--muted);line-height:1.6;flex:1}
-.world-meta{display:flex;gap:7px;flex-wrap:wrap}
-.pill{font-size:10px;padding:6px 9px;border-radius:30px;background:#302b50;color:#ded5ff}
-.pill.done{background:#164b3b;color:#8af0c4}
-.card-bottom{display:flex;justify-content:space-between;align-items:center;gap:10px}
+
+.btn:hover{
+ transform:translateY(-3px);
+ filter:brightness(1.13);
+ box-shadow:0 8px 22px #9275ff35;
+}
+
+.btn:active{transform:scale(.97)}
+
+.btn.gold{
+ background:linear-gradient(135deg,#f0cf83,#bd8e3c);
+ color:#241a0a;
+ box-shadow:0 5px 18px #e8bd6920;
+}
+
+.btn.secondary{
+ background:#292642;
+ border:1px solid var(--line);
+}
+
+.btn:disabled{
+ opacity:.5;
+ cursor:not-allowed;
+ transform:none;
+}
+
+/* DASHBOARD */
+.section-title{
+ font-size:24px;
+ margin:8px 0;
+}
+
+.section-sub{
+ font-size:13px;
+ color:var(--muted);
+ line-height:1.6;
+}
+
+.stats{
+ display:grid;
+ grid-template-columns:repeat(4,1fr);
+ gap:12px;
+ margin:22px 0;
+}
+
+.stat{
+ background:#111126;
+ border:1px solid var(--line);
+ padding:16px;
+ border-radius:14px;
+ transition:.3s;
+}
+
+.stat:hover{
+ border-color:#9275ff70;
+ transform:translateY(-4px);
+ box-shadow:0 8px 25px #9275ff18;
+}
+
+.stat strong{
+ display:block;
+ font-size:24px;
+ color:var(--gold);
+ margin-bottom:5px;
+}
+
+.stat span{
+ font-size:11px;
+ color:var(--muted);
+}
+
+.progress-wrap{
+ height:7px;
+ background:#302d49;
+ border-radius:20px;
+ overflow:hidden;
+ margin-top:8px;
+}
+
+.progress-bar{
+ height:100%;
+ background:linear-gradient(90deg,var(--purple),var(--gold));
+ width:0;
+ transition:width 1s ease;
+ box-shadow:0 0 12px #9275ff90;
+}
+
+/* WORLD CARDS */
+.world-grid{
+ display:grid;
+ grid-template-columns:repeat(2,1fr);
+ gap:15px;
+ margin-top:22px;
+}
+
+.world-card{
+ background:linear-gradient(145deg,#242044,#151429);
+ border:1px solid var(--line);
+ border-radius:17px;
+ padding:20px;
+ display:flex;
+ flex-direction:column;
+ gap:12px;
+ position:relative;
+ overflow:hidden;
+ transition:transform .3s,border-color .3s,box-shadow .3s;
+ animation:fadeUp .6s ease both;
+}
+
+.world-card::before{
+ content:"";
+ position:absolute;
+ width:180px;
+ height:180px;
+ background:radial-gradient(circle,#9275ff18,transparent 70%);
+ right:-80px;
+ top:-80px;
+ pointer-events:none;
+}
+
+.world-card:hover{
+ transform:translateY(-7px);
+ border-color:#9275ff90;
+ box-shadow:0 15px 35px #0005,0 0 20px #9275ff18;
+}
+
+.world-icon{
+ font-size:32px;
+ display:inline-block;
+ animation:float 4s ease-in-out infinite;
+}
+
+.world-card h3{
+ font-size:18px;
+ margin-top:5px;
+}
+
+.world-card p{
+ font-size:12px;
+ color:var(--muted);
+ line-height:1.6;
+ flex:1;
+}
+
+.world-meta{
+ display:flex;
+ gap:7px;
+ flex-wrap:wrap;
+}
+
+.pill{
+ font-size:10px;
+ padding:6px 9px;
+ border-radius:30px;
+ background:#302b50;
+ color:#ded5ff;
+}
+
+.pill.done{
+ background:#164b3b;
+ color:#8af0c4;
+}
+
+.card-bottom{
+ display:flex;
+ justify-content:space-between;
+ align-items:center;
+ gap:10px;
+}
+
+/* LEADERBOARD */
 .leaderboard{margin-top:25px}
-.leader-row{display:flex;justify-content:space-between;gap:10px;padding:12px 0;border-bottom:1px solid var(--line);font-size:13px}
-.rank{color:var(--gold);font-weight:bold;margin-right:8px}
-.game-head{display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap}
-.game-info{display:flex;gap:9px;flex-wrap:wrap}
-.game-chip{background:#24213f;border:1px solid var(--line);padding:9px 12px;border-radius:11px;font-size:12px}
-.timerbar{height:9px;background:#302d49;border-radius:20px;overflow:hidden;margin:20px 0}
-.timerfill{height:100%;width:100%;background:var(--green);transition:width 1s linear}
-.question-box{padding:25px 0}
-.question-count{color:var(--gold);font-size:12px;font-weight:bold;letter-spacing:1px}
-.question-box h2{font-size:clamp(19px,3vw,26px);line-height:1.5;margin:15px 0 24px}
-.options{display:grid;gap:11px}
-.option{text-align:left;padding:15px;border:1px solid var(--line);background:#17162e;color:white;border-radius:13px;line-height:1.5}
-.option:hover:not(:disabled){border-color:var(--purple);background:#24203f}
-.option.correct{border-color:var(--green);background:#143d32}
-.option.wrong{border-color:var(--red);background:#482333}
+
+.leader-row{
+ display:flex;
+ justify-content:space-between;
+ gap:10px;
+ padding:12px 0;
+ border-bottom:1px solid var(--line);
+ font-size:13px;
+ animation:fadeIn .5s ease both;
+}
+
+.rank{
+ color:var(--gold);
+ font-weight:bold;
+ margin-right:8px;
+}
+
+/* GAME */
+.game-head{
+ display:flex;
+ justify-content:space-between;
+ gap:12px;
+ align-items:center;
+ flex-wrap:wrap;
+}
+
+.game-info{
+ display:flex;
+ gap:9px;
+ flex-wrap:wrap;
+}
+
+.game-chip{
+ background:#24213f;
+ border:1px solid var(--line);
+ padding:9px 12px;
+ border-radius:11px;
+ font-size:12px;
+ transition:.2s;
+}
+
+.game-chip:hover{
+ border-color:#9275ff80;
+}
+
+.timerbar{
+ height:9px;
+ background:#302d49;
+ border-radius:20px;
+ overflow:hidden;
+ margin:20px 0;
+}
+
+.timerfill{
+ height:100%;
+ width:100%;
+ background:var(--green);
+ transition:width 1s linear,background .3s;
+ border-radius:20px;
+}
+
+.timerfill.danger{
+ animation:pulseTimer .7s infinite;
+}
+
+.question-box{
+ padding:25px 0;
+}
+
+.question-count{
+ color:var(--gold);
+ font-size:12px;
+ font-weight:bold;
+ letter-spacing:1px;
+}
+
+.question-box h2{
+ font-size:clamp(19px,3vw,26px);
+ line-height:1.5;
+ margin:15px 0 24px;
+}
+
+.options{
+ display:grid;
+ gap:11px;
+}
+
+.option{
+ text-align:left;
+ padding:15px;
+ border:1px solid var(--line);
+ background:#17162e;
+ color:white;
+ border-radius:13px;
+ line-height:1.5;
+ transition:background .2s,border-color .2s,transform .2s;
+ animation:fadeUp .35s ease both;
+}
+
+.option:hover:not(:disabled){
+ border-color:var(--purple);
+ background:#24203f;
+ transform:translateX(4px);
+}
+
+.option.correct{
+ border-color:var(--green);
+ background:#143d32;
+ animation:correctPulse .4s ease;
+}
+
+.option.wrong{
+ border-color:var(--red);
+ background:#482333;
+ animation:shake .35s ease;
+}
+
 .option:disabled{cursor:default}
-.feedback{margin-top:17px;padding:15px;border-radius:12px;line-height:1.7;font-size:13px}
-.feedback.good{background:#143d32;color:#a9f4d2}
-.feedback.bad{background:#482333;color:#ffd0d8}
-.game-actions{display:flex;justify-content:space-between;gap:10px;margin-top:20px;flex-wrap:wrap}
-.result{text-align:center;padding:35px 20px}
-.result .big{font-size:55px;margin-bottom:12px}
-.result h2{font-size:28px;margin-bottom:10px}
-.result p{color:var(--muted);line-height:1.7}
-.result-score{font-size:27px;color:var(--gold);font-weight:bold;margin:18px}
-.footer{text-align:center;color:#716d8c;font-size:11px;margin-top:35px}
-.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:#292642;border:1px solid var(--line);padding:13px 18px;border-radius:12px;z-index:10;font-size:13px;display:none;max-width:90%}
+
+.feedback{
+ margin-top:17px;
+ padding:15px;
+ border-radius:12px;
+ line-height:1.7;
+ font-size:13px;
+ animation:fadeUp .35s ease;
+}
+
+.feedback.good{
+ background:#143d32;
+ color:#a9f4d2;
+}
+
+.feedback.bad{
+ background:#482333;
+ color:#ffd0d8;
+}
+
+.game-actions{
+ display:flex;
+ justify-content:space-between;
+ gap:10px;
+ margin-top:20px;
+ flex-wrap:wrap;
+}
+
+/* RESULT */
+.result{
+ text-align:center;
+ padding:35px 20px;
+}
+
+.result .big{
+ font-size:55px;
+ margin-bottom:12px;
+ display:inline-block;
+ animation:float 3s ease-in-out infinite;
+}
+
+.result h2{
+ font-size:28px;
+ margin-bottom:10px;
+}
+
+.result p{
+ color:var(--muted);
+ line-height:1.7;
+}
+
+.result-score{
+ font-size:27px;
+ color:var(--gold);
+ font-weight:bold;
+ margin:18px;
+ text-shadow:0 0 18px #e8bd6940;
+}
+
+.footer{
+ text-align:center;
+ color:#716d8c;
+ font-size:11px;
+ margin-top:35px;
+}
+
+/* TOAST */
+.toast{
+ position:fixed;
+ bottom:20px;
+ left:50%;
+ transform:translateX(-50%);
+ background:#292642;
+ border:1px solid var(--line);
+ padding:13px 18px;
+ border-radius:12px;
+ z-index:20;
+ font-size:13px;
+ display:none;
+ max-width:90%;
+ box-shadow:0 10px 30px #0006;
+ animation:fadeUp .3s ease;
+}
+
+/* SCREEN TRANSITION */
+.screen-enter{
+ animation:fadeUp .55s ease both;
+}
+
+.question-enter{
+ animation:fadeUp .4s ease both;
+}
+
+/* CONFETTI */
+.confetti-piece{
+ position:fixed;
+ top:-15px;
+ width:9px;
+ height:14px;
+ z-index:30;
+ pointer-events:none;
+ animation:confettiFall linear forwards;
+}
+
+@keyframes confettiFall{
+ 0%{transform:translateY(-10px) rotate(0deg);opacity:1}
+ 100%{transform:translateY(110vh) rotate(720deg);opacity:0}
+}
+
+/* RESPONSIVE */
 @media(max-width:650px){
  .stats{grid-template-columns:repeat(2,1fr)}
  .world-grid{grid-template-columns:1fr}
  .panel{padding:18px}
  .hero{padding:30px 15px}
  .logo{font-size:20px}
+ .game-actions button{flex:1}
+ .card-bottom{align-items:flex-start}
+}
+
+@media(prefers-reduced-motion:reduce){
+ *,*::before,*::after{
+  animation-duration:.01ms!important;
+  animation-iteration-count:1!important;
+  scroll-behavior:auto!important;
+  transition-duration:.01ms!important;
+ }
 }
 </style>
 </head>
@@ -134,12 +692,14 @@ button{cursor:pointer;border:0}
   <div class="eyebrow">PLAYER DASHBOARD</div>
   <h1 style="font-size:28px;margin:10px 0">Halo, <span id="welcomeName" style="color:var(--gold)">Player</span>!</h1>
   <p class="section-sub">Pilih world yang ingin kamu jelajahi. Semua world langsung terbuka!</p>
+
   <div class="stats">
    <div class="stat"><strong id="statScore">0</strong><span>TOTAL SCORE</span></div>
    <div class="stat"><strong id="statXP">0</strong><span>TOTAL XP</span></div>
    <div class="stat"><strong id="statLevel">1</strong><span>PLAYER LEVEL</span></div>
    <div class="stat"><strong id="statDone">0/5</strong><span>WORLD SELESAI</span></div>
   </div>
+
   <div class="small">Progress penyelesaian world</div>
   <div class="progress-wrap"><div id="overallProgress" class="progress-bar"></div></div>
  </div>
@@ -170,12 +730,15 @@ button{cursor:pointer;border:0}
    <div class="game-chip">⏱ <b id="timerText">30</b>s</div>
   </div>
  </div>
+
  <div class="timerbar"><div id="timerFill" class="timerfill"></div></div>
+
  <div class="question-box">
   <div class="question-count" id="questionCount">PERTANYAAN 1 / 10</div>
   <h2 id="questionText"></h2>
   <div id="options" class="options"></div>
   <div id="feedback" class="feedback hidden"></div>
+
   <div class="game-actions">
    <button class="btn secondary" onclick="backToDashboard()">Kembali ke Dashboard</button>
    <button id="nextBtn" class="btn gold hidden" onclick="nextQuestion()">SOAL BERIKUTNYA</button>
@@ -191,6 +754,7 @@ button{cursor:pointer;border:0}
   <p id="resultDescription"></p>
   <div class="result-score" id="resultScore">+100 XP</div>
   <p id="resultExtra"></p>
+
   <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:25px">
    <button class="btn gold" onclick="backToDashboard()">KEMBALI KE WORLD</button>
    <button class="btn secondary" onclick="replayCurrent()">ULANGI WORLD</button>
@@ -213,11 +777,10 @@ const TABLE="financeverse_players";
 
 /* ===================================
    2. BANK SOAL WORLD 01-05
-   Format: pertanyaan, pilihan, index jawaban, pembahasan
    =================================== */
 const worlds=[
 {
- id:01,icon:"💰",title:"Perpajakan dan APBN",
+ id:1,icon:"💰",title:"Perpajakan dan APBN",
  description:"Kenali pajak, anggaran negara, dan kebijakan fiskal.",
  questions:[
  ["Pajak merupakan kontribusi wajib kepada negara yang bersifat ...",["Sukarela dan mendapat imbalan langsung","Memaksa berdasarkan undang-undang tanpa imbalan langsung","Pinjaman yang harus dikembalikan","Sumbangan khusus masyarakat"],1,"Pajak bersifat wajib berdasarkan undang-undang dan tidak memberikan imbalan langsung."],
@@ -233,7 +796,7 @@ const worlds=[
  ]
 },
 {
- id:02,icon:"🤝",title:"Koperasi dan Badan Usaha",
+ id:2,icon:"🤝",title:"Koperasi dan Badan Usaha",
  description:"Pelajari koperasi, BUMN, BUMD, dan badan usaha swasta.",
  questions:[
  ["Asas utama koperasi Indonesia adalah ...",["Persaingan","Kekeluargaan","Monopoli","Individualisme"],1,"Koperasi Indonesia berasaskan kekeluargaan."],
@@ -249,7 +812,7 @@ const worlds=[
  ]
 },
 {
- id:03,icon:"👩‍💼",title:"Ketenagakerjaan",
+ id:3,icon:"👩‍💼",title:"Ketenagakerjaan",
  description:"Pahami tenaga kerja, pengangguran, upah, dan kesempatan kerja.",
  questions:[
  ["Penduduk yang mampu melakukan pekerjaan disebut ...",["Tenaga kerja","Bukan angkatan kerja","Konsumen","Pengusaha"],0,"Tenaga kerja adalah penduduk yang mampu melakukan pekerjaan."],
@@ -265,7 +828,7 @@ const worlds=[
  ]
 },
 {
- id:04,icon:"🌍",title:"Sejarah dan Sistem Ekonomi",
+ id:4,icon:"🌍",title:"Sejarah dan Sistem Ekonomi",
  description:"Jelajahi perkembangan ilmu ekonomi dan berbagai sistem ekonomi.",
  questions:[
  ["Tokoh yang dikenal sebagai Bapak Ekonomi Modern adalah ...",["Adam Smith","Karl Marx","John Maynard Keynes","David Ricardo"],0,"Adam Smith dikenal melalui karyanya The Wealth of Nations."],
@@ -281,7 +844,7 @@ const worlds=[
  ]
 },
 {
- id:05,icon:"📊",title:"Akuntansi Dasar",
+ id:5,icon:"📊",title:"Akuntansi Dasar",
  description:"Kuasai persamaan akuntansi, jurnal, buku besar, dan laporan keuangan.",
  questions:[
  ["Persamaan dasar akuntansi yang benar adalah ...",["Aset = Utang + Modal","Aset = Pendapatan − Beban","Modal = Aset + Utang","Utang = Aset + Modal"],0,"Persamaan dasar akuntansi adalah aset sama dengan liabilitas ditambah ekuitas."],
@@ -307,35 +870,85 @@ let timerInterval=null,answered=false,runFinished=false;
 let toastTimer=null;
 
 const $=id=>document.getElementById(id);
+
 const completedIds=()=>Array.isArray(player?.completed_world_ids)
  ?player.completed_world_ids.map(Number):[];
 
 function configReady(){
- return SUPABASE_URL.startsWith("https://")&&SUPABASE_KEY.startsWith("sb_publishable_");
+ return SUPABASE_URL.startsWith("https://")&&
+ SUPABASE_KEY.startsWith("sb_publishable_");
 }
-function calcLevel(xp){return Math.floor(Number(xp||0)/100)+1}
+
+function calcLevel(xp){
+ return Math.floor(Number(xp||0)/100)+1;
+}
+
 function showToast(message){
- const el=$("toast");el.textContent=message;el.style.display="block";
+ const el=$("toast");
+ el.textContent=message;
+ el.style.display="block";
  clearTimeout(toastTimer);
  toastTimer=setTimeout(()=>el.style.display="none",3500);
 }
+
 function showScreen(id){
- ["loginScreen","dashboard","gameScreen","resultScreen"].forEach(x=>$(x).classList.add("hidden"));
- $(id).classList.remove("hidden");
+ ["loginScreen","dashboard","gameScreen","resultScreen"].forEach(x=>{
+  $(x).classList.add("hidden");
+  $(x).classList.remove("screen-enter");
+ });
+
+ const target=$(id);
+ target.classList.remove("hidden");
+ void target.offsetWidth;
+ target.classList.add("screen-enter");
+
  $("logoutBtn").classList.toggle("hidden",id==="loginScreen");
  window.scrollTo({top:0,behavior:"smooth"});
 }
+
 function escapeHTML(value){
  return String(value).replace(/[&<>"']/g,c=>({
- "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+  "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
  }[c]));
 }
+
 function makePlayerCode(){
- return "FV"+Date.now().toString(36).toUpperCase()+Math.random().toString(36).slice(2,6).toUpperCase();
+ return "FV"+Date.now().toString(36).toUpperCase()+
+ Math.random().toString(36).slice(2,6).toUpperCase();
 }
 
 /* ===================================
-   4. KONEKSI SUPABASE
+   4. EFEK ANIMASI
+   =================================== */
+function animateQuestion(){
+ const box=document.querySelector(".question-box");
+ if(!box)return;
+ box.classList.remove("question-enter");
+ void box.offsetWidth;
+ box.classList.add("question-enter");
+}
+
+function createConfetti(){
+ const colors=["#9275ff","#e8bd69","#55d6a2","#ff6b83","#ffffff"];
+
+ for(let i=0;i<65;i++){
+  const piece=document.createElement("div");
+  piece.className="confetti-piece";
+  piece.style.left=Math.random()*100+"vw";
+  piece.style.background=colors[Math.floor(Math.random()*colors.length)];
+  piece.style.animationDuration=(2.5+Math.random()*3)+"s";
+  piece.style.animationDelay=(Math.random()*.8)+"s";
+  piece.style.width=(6+Math.random()*7)+"px";
+  piece.style.height=(8+Math.random()*10)+"px";
+  piece.style.borderRadius=Math.random()>.5?"50%":"2px";
+
+  document.body.appendChild(piece);
+  setTimeout(()=>piece.remove(),6500);
+ }
+}
+
+/* ===================================
+   5. KONEKSI SUPABASE
    =================================== */
 function apiHeaders(extra={}){
  return {
@@ -345,60 +958,92 @@ function apiHeaders(extra={}){
   ...extra
  };
 }
+
 async function api(path,options={}){
  if(!configReady())throw new Error("Publishable Key belum diisi.");
+
  const response=await fetch(SUPABASE_URL+"/rest/v1/"+path,{
   ...options,
   headers:apiHeaders(options.headers||{})
  });
+
  const body=await response.text();
+
  if(!response.ok)throw new Error(body||"Supabase request gagal.");
+
  return body?JSON.parse(body):null;
 }
 
 /* ===================================
-   5. LOGIN DAN SIMPAN PEMAIN
+   6. LOGIN DAN SIMPAN PEMAIN
    =================================== */
 async function login(){
  const name=$("playerName").value.trim();
- if(!name){showToast("Masukkan nama pemain terlebih dahulu.");return}
- if(!configReady()){showToast("Masukkan Publishable Key Supabase.");return}
 
- const btn=$("loginBtn");btn.disabled=true;btn.textContent="MEMUAT...";
+ if(!name){
+  showToast("Masukkan nama pemain terlebih dahulu.");
+  return;
+ }
+
+ if(!configReady()){
+  showToast("Masukkan Publishable Key Supabase.");
+  return;
+ }
+
+ const btn=$("loginBtn");
+ btn.disabled=true;
+ btn.textContent="MEMUAT...";
 
  try{
   const query="player_name=eq."+encodeURIComponent(name)+
    "&select=player_code,player_name,score,xp,level,badges,completed_worlds,completed_world_ids&limit=1";
+
   const found=await api(TABLE+"?"+query);
 
   if(found.length){
    player=found[0];
-   if(!Array.isArray(player.completed_world_ids))player.completed_world_ids=[];
+
+   if(!Array.isArray(player.completed_world_ids))
+    player.completed_world_ids=[];
+
    player.completed_world_ids=player.completed_world_ids
-    .map(Number).filter(id=>worlds.some(w=>w.id===id));
+    .map(Number)
+    .filter(id=>worlds.some(w=>w.id===id));
+
   }else{
    player={
     player_code:makePlayerCode(),
     player_name:name,
-    score:0,xp:0,level:1,badges:0,
+    score:0,
+    xp:0,
+    level:1,
+    badges:0,
     completed_worlds:0,
     completed_world_ids:[]
    };
+
    const inserted=await api(TABLE,{
     method:"POST",
     headers:{"Prefer":"return=representation"},
     body:JSON.stringify(player)
    });
+
    if(inserted?.[0])player=inserted[0];
-   if(!Array.isArray(player.completed_world_ids))player.completed_world_ids=[];
+
+   if(!Array.isArray(player.completed_world_ids))
+    player.completed_world_ids=[];
   }
 
   localStorage.setItem("financeversePlayerCode",player.player_code);
   openDashboard();
+
  }catch(error){
-  console.error(error);showToast("Gagal masuk: "+error.message);
+  console.error(error);
+  showToast("Gagal masuk: "+error.message);
+
  }finally{
-  btn.disabled=false;btn.textContent="MULAI PETUALANGAN";
+  btn.disabled=false;
+  btn.textContent="MULAI PETUALANGAN";
  }
 }
 
@@ -410,7 +1055,9 @@ async function savePlayer(){
  player.level=calcLevel(player.xp);
  player.updated_at=new Date().toISOString();
 
- const filter="player_code=eq."+encodeURIComponent(player.player_code);
+ const filter="player_code=eq."+
+ encodeURIComponent(player.player_code);
+
  await api(TABLE+"?"+filter,{
   method:"PATCH",
   headers:{"Prefer":"return=minimal"},
@@ -427,6 +1074,7 @@ async function savePlayer(){
 
 async function restorePlayer(){
  const code=localStorage.getItem("financeversePlayerCode");
+
  if(!code||!configReady())return;
 
  try{
@@ -436,12 +1084,20 @@ async function restorePlayer(){
 
   if(rows.length){
    player=rows[0];
-   if(!Array.isArray(player.completed_world_ids))player.completed_world_ids=[];
+
+   if(!Array.isArray(player.completed_world_ids))
+    player.completed_world_ids=[];
+
    player.completed_world_ids=player.completed_world_ids
-    .map(Number).filter(id=>worlds.some(w=>w.id===id));
+    .map(Number)
+    .filter(id=>worlds.some(w=>w.id===id));
+
    openDashboard();
   }
- }catch(error){console.warn("Auto restore:",error)}
+
+ }catch(error){
+  console.warn("Auto restore:",error);
+ }
 }
 
 function logout(){
@@ -452,7 +1108,7 @@ function logout(){
 }
 
 /* ===================================
-   6. DASHBOARD DAN LEADERBOARD
+   7. DASHBOARD DAN LEADERBOARD
    =================================== */
 function openDashboard(){
  if(!player)return;
@@ -463,6 +1119,7 @@ function openDashboard(){
  $("statLevel").textContent=calcLevel(player.xp);
 
  const done=completedIds().length;
+
  $("statDone").textContent=done+"/5";
  $("overallProgress").style.width=(done/5*100)+"%";
 
@@ -472,17 +1129,20 @@ function openDashboard(){
 }
 
 function renderWorlds(){
- const grid=$("worldGrid");grid.innerHTML="";
+ const grid=$("worldGrid");
+ grid.innerHTML="";
 
- worlds.forEach(world=>{
+ worlds.forEach((world,index)=>{
   const done=completedIds().includes(world.id);
+
   const card=document.createElement("div");
   card.className="world-card";
+  card.style.animationDelay=(index*.1)+"s";
 
   card.innerHTML=`
    <div class="world-icon">${world.icon}</div>
    <div>
-    <div class="eyebrow">WORLD ${world.id}</div>
+    <div class="eyebrow">WORLD ${String(world.id).padStart(2,"0")}</div>
     <h3>${world.title}</h3>
    </div>
    <p>${world.description}</p>
@@ -499,38 +1159,57 @@ function renderWorlds(){
     </button>
    </div>`;
 
-  card.querySelector("button").addEventListener("click",()=>startWorld(world.id));
+  card.querySelector("button").addEventListener("click",()=>{
+   startWorld(world.id);
+  });
+
   grid.appendChild(card);
  });
 }
 
 async function loadLeaderboard(){
  $("leaderboardList").textContent="Memuat leaderboard...";
+
  try{
-  const rows=await api(TABLE+"?select=player_name,score,xp&order=score.desc&limit=10");
-  if(!rows.length){$("leaderboardList").textContent="Belum ada pemain.";return}
+  const rows=await api(TABLE+
+   "?select=player_name,score,xp&order=score.desc&limit=10");
+
+  if(!rows.length){
+   $("leaderboardList").textContent="Belum ada pemain.";
+   return;
+  }
 
   $("leaderboardList").innerHTML=rows.map((p,i)=>`
-   <div class="leader-row">
+   <div class="leader-row" style="animation-delay:${i*.06}s">
     <div><span class="rank">#${i+1}</span>${escapeHTML(p.player_name||"Player")}</div>
-    <div><b>${Number(p.score||0).toLocaleString("id-ID")}</b> <span class="small">score</span></div>
-   </div>`).join("");
+    <div><b>${Number(p.score||0).toLocaleString("id-ID")}</b>
+    <span class="small">score</span></div>
+   </div>
+  `).join("");
+
  }catch(error){
   $("leaderboardList").textContent="Leaderboard belum dapat dimuat.";
  }
 }
 
 /* ===================================
-   7. GAMEPLAY
+   8. GAMEPLAY
    =================================== */
 function startWorld(id){
  currentWorld=worlds.find(w=>w.id===Number(id));
  if(!currentWorld)return;
 
- questionIndex=0;lives=3;runScore=0;
- runFinished=false;answered=false;
+ clearInterval(timerInterval);
 
- $("gameWorldNumber").textContent="WORLD "+currentWorld.id;
+ questionIndex=0;
+ lives=3;
+ runScore=0;
+ runFinished=false;
+ answered=false;
+
+ $("gameWorldNumber").textContent=
+  "WORLD "+String(currentWorld.id).padStart(2,"0");
+
  $("gameWorldTitle").textContent=currentWorld.title;
  $("lives").textContent=lives;
  $("runScore").textContent=runScore;
@@ -541,13 +1220,21 @@ function startWorld(id){
 
 function showQuestion(){
  clearInterval(timerInterval);
- if(!currentWorld||runFinished)return;
- if(lives<=0){finishWorld(false);return}
 
- answered=false;timeLeft=30;
+ if(!currentWorld||runFinished)return;
+ if(lives<=0){
+  finishWorld(false);
+  return;
+ }
+
+ answered=false;
+ timeLeft=30;
+
  const q=currentWorld.questions[questionIndex];
 
- $("questionCount").textContent="PERTANYAAN "+(questionIndex+1)+" / 10";
+ $("questionCount").textContent=
+  "PERTANYAAN "+(questionIndex+1)+" / "+currentWorld.questions.length;
+
  $("questionText").textContent=q[0];
  $("feedback").className="feedback hidden";
  $("feedback").textContent="";
@@ -557,11 +1244,17 @@ function showQuestion(){
  q[1].forEach((option,index)=>{
   const button=document.createElement("button");
   button.className="option";
+  button.style.animationDelay=(index*.07)+"s";
   button.textContent=String.fromCharCode(65+index)+". "+option;
-  button.addEventListener("click",()=>answerQuestion(index));
+
+  button.addEventListener("click",()=>{
+   answerQuestion(index);
+  });
+
   $("options").appendChild(button);
  });
 
+ animateQuestion();
  updateTimer();
 
  timerInterval=setInterval(()=>{
@@ -578,8 +1271,13 @@ function showQuestion(){
 function updateTimer(){
  $("timerText").textContent=timeLeft;
  $("timerFill").style.width=(timeLeft/30*100)+"%";
+
  $("timerFill").style.background=
-  timeLeft<=10?"var(--red)":timeLeft<=18?"var(--gold)":"var(--green)";
+  timeLeft<=10?"var(--red)":
+  timeLeft<=18?"var(--gold)":
+  "var(--green)";
+
+ $("timerFill").classList.toggle("danger",timeLeft<=10);
 }
 
 function answerQuestion(selected){
@@ -593,8 +1291,12 @@ function answerQuestion(selected){
 
  buttons.forEach((button,index)=>{
   button.disabled=true;
-  if(index===q[2])button.classList.add("correct");
-  if(index===selected&&selected!==q[2])button.classList.add("wrong");
+
+  if(index===q[2])
+   button.classList.add("correct");
+
+  if(index===selected&&selected!==q[2])
+   button.classList.add("wrong");
  });
 
  const feedback=$("feedback");
@@ -603,27 +1305,39 @@ function answerQuestion(selected){
  if(selected===q[2]){
   runScore+=10;
   $("runScore").textContent=runScore;
+
   feedback.className="feedback good";
-  feedback.innerHTML="<b>Jawaban benar! +10 poin</b><br>"+escapeHTML(q[3]);
+  feedback.innerHTML=
+   "<b>✓ Jawaban benar! +10 poin</b><br>"+
+   escapeHTML(q[3]);
+
  }else{
   lives--;
   $("lives").textContent=lives;
+
   feedback.className="feedback bad";
+
   feedback.innerHTML="<b>"+
    (selected===-1?"Waktu habis!":"Jawaban belum tepat.")+
-   "</b><br>Jawaban benar: "+escapeHTML(q[1][q[2]])+
+   "</b><br>Jawaban benar: "+
+   escapeHTML(q[1][q[2]])+
    "<br>"+escapeHTML(q[3])+
    "<br><br>Sisa nyawa: "+lives;
  }
 
- $("nextBtn").textContent=lives<=0?"LIHAT HASIL":"SOAL BERIKUTNYA";
+ $("nextBtn").textContent=
+  lives<=0?"LIHAT HASIL":"SOAL BERIKUTNYA";
+
  $("nextBtn").classList.remove("hidden");
 }
 
 function nextQuestion(){
  if(!answered)return;
 
- if(lives<=0){finishWorld(false);return}
+ if(lives<=0){
+  finishWorld(false);
+  return;
+ }
 
  questionIndex++;
 
@@ -635,10 +1349,11 @@ function nextQuestion(){
 }
 
 /* ===================================
-   8. HASIL DAN PENYIMPANAN PROGRES
+   9. HASIL DAN PENYIMPANAN PROGRES
    =================================== */
 async function finishWorld(success){
  if(runFinished)return;
+
  runFinished=true;
  clearInterval(timerInterval);
 
@@ -666,6 +1381,7 @@ async function finishWorld(success){
  try{
   await savePlayer();
   showResult(true,false,false);
+
  }catch(error){
   console.error(error);
 
@@ -685,29 +1401,41 @@ function showResult(success,alreadyDone=false,saveError=false){
   $("resultIcon").textContent="🏆";
   $("resultEyebrow").textContent="WORLD COMPLETED";
   $("resultTitle").textContent="Luar biasa!";
+
   $("resultDescription").textContent=
    "Kamu berhasil menyelesaikan "+currentWorld.title+".";
 
   if(saveError){
    $("resultScore").textContent="BELUM TERSIMPAN";
+
    $("resultExtra").textContent=
     "World berhasil diselesaikan, tetapi penyimpanan gagal. Periksa koneksi dan coba ulangi world.";
+
   }else if(alreadyDone){
    $("resultScore").textContent="+"+runScore+" POIN LATIHAN";
+
    $("resultExtra").textContent=
     "World ini sudah pernah diselesaikan. Mode latihan tidak menambah skor atau XP.";
+
   }else{
    $("resultScore").textContent="+"+runScore+" XP";
+
    $("resultExtra").textContent=
     "Skor dan XP berhasil ditambahkan ke akunmu!";
+
+   createConfetti();
   }
+
  }else{
   $("resultIcon").textContent="💔";
   $("resultEyebrow").textContent="MISSION FAILED";
   $("resultTitle").textContent="Jangan menyerah!";
+
   $("resultDescription").textContent=
    "Nyawamu habis sebelum menyelesaikan "+currentWorld.title+".";
+
   $("resultScore").textContent="0 XP";
+
   $("resultExtra").textContent=
    "Pelajari pembahasan jawaban, lalu coba ulangi world ini. Skor hanya diberikan setelah berhasil menyelesaikan semua soal.";
  }
@@ -720,19 +1448,22 @@ function replayCurrent(){
 function backToDashboard(){
  clearInterval(timerInterval);
  runFinished=true;
+
  if(player)openDashboard();
  else showScreen("loginScreen");
 }
 
 /* ===================================
-   9. INISIALISASI APLIKASI
+   10. INISIALISASI APLIKASI
    =================================== */
 window.addEventListener("load",()=>{
  if(!configReady()){
   showToast("Isi Publishable Key Supabase terlebih dahulu.");
  }
+
  restorePlayer();
 });
 </script>
+
 </body>
 </html>
