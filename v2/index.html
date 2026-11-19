@@ -4,645 +4,252 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>FINANCEVERSE | Economics Adventure</title>
-
 <style>
 :root{
- --bg:#0b0b19;
- --panel:#17162d;
- --panel2:#211e40;
- --purple:#9275ff;
- --gold:#e8bd69;
- --text:#f4f1ff;
- --muted:#aaa5c5;
- --green:#55d6a2;
- --red:#ff6b83;
+ --bg:#0b0b19;--panel:#17162d;--panel2:#211e40;
+ --purple:#9275ff;--gold:#e8bd69;--text:#f4f1ff;
+ --muted:#aaa5c5;--green:#55d6a2;--red:#ff6b83;
  --line:rgba(255,255,255,.09);
 }
 *{box-sizing:border-box;margin:0;padding:0}
-
 html{scroll-behavior:smooth}
-
 body{
- font-family:Arial,sans-serif;
- color:var(--text);
- min-height:100vh;
+ font-family:Arial,sans-serif;color:var(--text);min-height:100vh;
  overflow-x:hidden;
- background:
-  radial-gradient(ellipse at 50% -10%,#382967 0,#17132e 38%,#0b0b19 75%);
+ background:radial-gradient(ellipse at 50% -10%,#382967 0,#17132e 38%,#0b0b19 75%);
 }
-
-button,input{font:inherit}
-button{cursor:pointer;border:0}
-
-.container{
- width:min(1100px,92%);
- margin:auto;
- padding:25px 0 50px;
- position:relative;
- z-index:1;
-}
-
+button,input{font:inherit}button{cursor:pointer;border:0}
+.container{width:min(1100px,92%);margin:auto;padding:25px 0 50px;position:relative;z-index:1}
 .hidden{display:none!important}
 
 /* GALAXY BACKGROUND */
 body::before{
- content:"";
- position:fixed;
- inset:0;
- pointer-events:none;
- z-index:0;
- opacity:.48;
+ content:"";position:fixed;inset:0;pointer-events:none;z-index:0;opacity:.48;
  background-image:
-  radial-gradient(2px 2px at 20% 30%,#fff 50%,transparent 100%),
-  radial-gradient(2px 2px at 75% 20%,#e8bd69 50%,transparent 100%),
-  radial-gradient(2px 2px at 50% 70%,#9275ff 50%,transparent 100%),
-  radial-gradient(1px 1px at 90% 80%,#fff 50%,transparent 100%),
-  radial-gradient(2px 2px at 10% 85%,#9275ff 50%,transparent 100%);
- background-size:250px 250px;
- animation:starMove 45s linear infinite;
+ radial-gradient(2px 2px at 20% 30%,#fff 50%,transparent 100%),
+ radial-gradient(2px 2px at 75% 20%,#e8bd69 50%,transparent 100%),
+ radial-gradient(2px 2px at 50% 70%,#9275ff 50%,transparent 100%),
+ radial-gradient(1px 1px at 90% 80%,#fff 50%,transparent 100%),
+ radial-gradient(2px 2px at 10% 85%,#9275ff 50%,transparent 100%);
+ background-size:250px 250px;animation:starMove 45s linear infinite;
 }
-
 body::after{
- content:"";
- position:fixed;
- inset:0;
- pointer-events:none;
- z-index:0;
- background:
-  radial-gradient(ellipse at 15% 20%,#9275ff16,transparent 45%),
-  radial-gradient(ellipse at 85% 70%,#e8bd6910,transparent 40%);
+ content:"";position:fixed;inset:0;pointer-events:none;z-index:0;
+ background:radial-gradient(ellipse at 15% 20%,#9275ff16,transparent 45%),
+ radial-gradient(ellipse at 85% 70%,#e8bd6910,transparent 40%);
 }
+@keyframes starMove{from{background-position:0 0}to{background-position:250px 500px}}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-9px)}}
+@keyframes glow{0%,100%{box-shadow:0 0 15px #9275ff20}50%{box-shadow:0 0 30px #9275ff55}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes popIn{0%{opacity:0;transform:scale(.88)}70%{transform:scale(1.04)}100%{opacity:1;transform:scale(1)}}
+@keyframes pulseTimer{0%,100%{filter:brightness(1)}50%{filter:brightness(1.6)}}
+@keyframes shake{0%,100%{transform:translateX(0)}20%,60%{transform:translateX(-5px)}40%,80%{transform:translateX(5px)}}
+@keyframes correctPulse{0%{transform:scale(1)}50%{transform:scale(1.025)}100%{transform:scale(1)}}
+@keyframes rotateGlow{from{transform:rotate(0)}to{transform:rotate(360deg)}}
 
-@keyframes starMove{
- from{background-position:0 0}
- to{background-position:250px 500px}
+/* OPENING INTRO */
+#introScreen{
+ position:fixed;inset:0;z-index:9999;overflow:hidden;
+ display:flex;align-items:center;justify-content:center;
+ flex-direction:column;text-align:center;
+ background:radial-gradient(ellipse at center,#30205b 0%,#100e25 55%,#070711 100%);
+ transition:opacity .8s ease,visibility .8s ease;
 }
-
-@keyframes float{
- 0%,100%{transform:translateY(0)}
- 50%{transform:translateY(-9px)}
+#introScreen.intro-hide{opacity:0;visibility:hidden;pointer-events:none}
+.intro-stars,.intro-stars::before,.intro-stars::after{
+ position:absolute;inset:-100%;content:"";pointer-events:none;
+ background-image:
+ radial-gradient(2px 2px at 20% 30%,#fff 50%,transparent 100%),
+ radial-gradient(2px 2px at 70% 60%,#e8bd69 50%,transparent 100%),
+ radial-gradient(1px 1px at 40% 80%,#fff 50%,transparent 100%),
+ radial-gradient(2px 2px at 85% 20%,#9275ff 50%,transparent 100%);
+ background-size:230px 230px;
+ animation:introStar 18s linear infinite;
 }
-
-@keyframes glow{
- 0%,100%{box-shadow:0 0 15px #9275ff20}
- 50%{box-shadow:0 0 30px #9275ff55}
+.intro-stars::before{opacity:.55;transform:scale(1.3);animation-duration:25s}
+.intro-stars::after{opacity:.35;transform:scale(.8);animation-duration:32s}
+@keyframes introStar{from{transform:translateY(0)}to{transform:translateY(230px)}}
+.intro-glow{
+ position:absolute;width:min(75vw,550px);aspect-ratio:1;border-radius:50%;
+ background:radial-gradient(circle,#9275ff40 0%,#9275ff12 42%,transparent 70%);
+ animation:introPulse 3s ease-in-out infinite;
 }
-
-@keyframes fadeUp{
- from{opacity:0;transform:translateY(22px)}
- to{opacity:1;transform:translateY(0)}
+@keyframes introPulse{0%,100%{transform:scale(.85);opacity:.6}50%{transform:scale(1.15);opacity:1}}
+.intro-portal{
+ position:absolute;width:min(58vw,360px);aspect-ratio:1;border-radius:50%;
+ border:2px solid #e8bd6970;
+ box-shadow:0 0 25px #9275ff90,inset 0 0 35px #9275ff60,0 0 100px #9275ff40;
+ animation:portalOpen 2.5s ease-out both,rotateGlow 18s linear infinite;
 }
-
-@keyframes fadeIn{
- from{opacity:0}
- to{opacity:1}
+.intro-portal::before,.intro-portal::after{
+ content:"";position:absolute;inset:13px;border-radius:50%;
+ border:1px solid #9275ff99;
+ box-shadow:0 0 20px #9275ff70;
 }
-
-@keyframes popIn{
- 0%{opacity:0;transform:scale(.88)}
- 70%{transform:scale(1.04)}
- 100%{opacity:1;transform:scale(1)}
+.intro-portal::after{inset:28px;border-color:#e8bd6990}
+@keyframes portalOpen{
+ from{transform:scale(.15);opacity:0}
+ 65%{opacity:1}
+ to{transform:scale(1);opacity:1}
 }
-
-@keyframes pulseTimer{
- 0%,100%{filter:brightness(1)}
- 50%{filter:brightness(1.6)}
+.intro-content{position:relative;z-index:2;padding:25px;width:100%}
+.intro-symbol{
+ font-size:clamp(42px,9vw,76px);margin-bottom:18px;
+ display:inline-block;filter:drop-shadow(0 0 22px #e8bd69);
+ animation:introLogo 1.2s .25s both;
 }
-
-@keyframes shake{
- 0%,100%{transform:translateX(0)}
- 20%,60%{transform:translateX(-5px)}
- 40%,80%{transform:translateX(5px)}
+@keyframes introLogo{
+ from{opacity:0;transform:scale(.3) rotate(-25deg)}
+ to{opacity:1;transform:scale(1) rotate(0)}
 }
-
-@keyframes correctPulse{
- 0%{transform:scale(1)}
- 50%{transform:scale(1.025)}
- 100%{transform:scale(1)}
+.intro-title{
+ font-size:clamp(32px,8vw,65px);font-weight:900;letter-spacing:4px;
+ text-shadow:0 0 25px #9275ff,0 0 55px #9275ff70;
+ animation:fadeUp 1s .65s both;
 }
-
-@keyframes rotateGlow{
- from{transform:rotate(0deg)}
- to{transform:rotate(360deg)}
+.intro-title span{color:var(--gold)}
+.intro-subtitle{
+ margin-top:15px;color:#d6cffa;letter-spacing:3px;
+ font-size:clamp(9px,2vw,12px);
+ animation:fadeUp 1s 1s both;
+}
+.intro-loading{
+ width:170px;height:3px;background:#ffffff25;border-radius:10px;
+ margin:35px auto 0;overflow:hidden;animation:fadeIn .5s 1s both;
+}
+.intro-loading span{
+ display:block;height:100%;width:0;
+ background:linear-gradient(90deg,var(--purple),var(--gold));
+ box-shadow:0 0 12px var(--gold);
+ animation:loadingBar 2.4s .3s ease forwards;
+}
+@keyframes loadingBar{to{width:100%}}
+.intro-caption{
+ margin-top:12px;color:#aaa5c5;font-size:10px;letter-spacing:2px;
+ animation:fadeIn 1s 1.2s both;
 }
 
 /* TOPBAR */
-.topbar{
- display:flex;
- justify-content:space-between;
- align-items:center;
- gap:12px;
- margin-bottom:28px;
- animation:fadeUp .7s ease both;
-}
-
-.logo{
- font-size:23px;
- font-weight:900;
- letter-spacing:2px;
- text-shadow:0 0 20px #9275ff70;
-}
-
+.topbar{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:28px;animation:fadeUp .7s ease both}
+.logo{font-size:23px;font-weight:900;letter-spacing:2px;text-shadow:0 0 20px #9275ff70}
 .logo span{color:var(--gold)}
-
-.tagline{
- font-size:10px;
- color:var(--muted);
- letter-spacing:2px;
- margin-top:5px;
-}
+.tagline{font-size:10px;color:var(--muted);letter-spacing:2px;margin-top:5px}
 
 /* PANEL */
 .panel{
  background:linear-gradient(145deg,#211e40ed,#151429f2);
- border:1px solid var(--line);
- border-radius:20px;
- padding:24px;
- box-shadow:0 18px 50px #0004;
- backdrop-filter:blur(12px);
+ border:1px solid var(--line);border-radius:20px;padding:24px;
+ box-shadow:0 18px 50px #0004;backdrop-filter:blur(12px);
 }
-
 .hero{
- text-align:center;
- padding:45px 22px;
- position:relative;
- overflow:hidden;
+ text-align:center;padding:45px 22px;position:relative;overflow:hidden;
+ /* LOGIN TRANSPARAN: GALAXY DI BELAKANG TETAP TERLIHAT */
+ background:rgba(21,20,41,.30);
+ backdrop-filter:blur(3px);
+ border-color:rgba(255,255,255,.13);
 }
-
 .hero::before{
- content:"";
- position:absolute;
- width:260px;
- height:260px;
- border-radius:50%;
+ content:"";position:absolute;width:260px;height:260px;border-radius:50%;
  background:radial-gradient(circle,#9275ff20,transparent 70%);
- top:-100px;
- left:50%;
- transform:translateX(-50%);
- pointer-events:none;
+ top:-100px;left:50%;transform:translateX(-50%);pointer-events:none;
 }
-
-.hero h1{
- font-size:clamp(30px,6vw,53px);
- margin:14px 0;
- position:relative;
-}
-
+.hero h1{font-size:clamp(30px,6vw,53px);margin:14px 0;position:relative}
 .hero h1 span{color:var(--gold)}
-
-.hero p{
- color:var(--muted);
- line-height:1.7;
- max-width:650px;
- margin:auto;
-}
-
-.eyebrow{
- font-size:11px;
- color:var(--gold);
- font-weight:bold;
- letter-spacing:2.5px;
-}
-
-.loginbox{
- max-width:440px;
- margin:25px auto 0;
- text-align:left;
- position:relative;
-}
-
-.small{
- font-size:12px;
- color:var(--muted);
- line-height:1.6;
-}
-
+.hero p{color:var(--muted);line-height:1.7;max-width:650px;margin:auto}
+.eyebrow{font-size:11px;color:var(--gold);font-weight:bold;letter-spacing:2.5px}
+.loginbox{max-width:440px;margin:25px auto 0;text-align:left;position:relative}
+.small{font-size:12px;color:var(--muted);line-height:1.6}
 .input{
- width:100%;
- padding:15px;
- border-radius:12px;
- margin:12px 0;
- background:#101024;
- border:1px solid #383354;
- color:white;
- outline:none;
- transition:.25s;
+ width:100%;padding:15px;border-radius:12px;margin:12px 0;
+ background:#101024;border:1px solid #383354;color:white;outline:none;transition:.25s;
 }
-
-.input:focus{
- border-color:var(--purple);
- box-shadow:0 0 15px #9275ff40;
-}
+.input:focus{border-color:var(--purple);box-shadow:0 0 15px #9275ff40}
 
 /* BUTTON */
 .btn{
- padding:13px 18px;
- border-radius:12px;
- font-weight:bold;
- color:white;
+ padding:13px 18px;border-radius:12px;font-weight:bold;color:white;
  background:linear-gradient(135deg,var(--purple),#684bce);
  transition:transform .25s,filter .25s,box-shadow .25s;
 }
-
-.btn:hover{
- transform:translateY(-3px);
- filter:brightness(1.13);
- box-shadow:0 8px 22px #9275ff35;
-}
-
+.btn:hover{transform:translateY(-3px);filter:brightness(1.13);box-shadow:0 8px 22px #9275ff35}
 .btn:active{transform:scale(.97)}
-
-.btn.gold{
- background:linear-gradient(135deg,#f0cf83,#bd8e3c);
- color:#241a0a;
- box-shadow:0 5px 18px #e8bd6920;
-}
-
-.btn.secondary{
- background:#292642;
- border:1px solid var(--line);
-}
-
-.btn:disabled{
- opacity:.5;
- cursor:not-allowed;
- transform:none;
-}
+.btn.gold{background:linear-gradient(135deg,#f0cf83,#bd8e3c);color:#241a0a;box-shadow:0 5px 18px #e8bd6920}
+.btn.secondary{background:#292642;border:1px solid var(--line)}
+.btn:disabled{opacity:.5;cursor:not-allowed;transform:none}
 
 /* DASHBOARD */
-.section-title{
- font-size:24px;
- margin:8px 0;
-}
-
-.section-sub{
- font-size:13px;
- color:var(--muted);
- line-height:1.6;
-}
-
-.stats{
- display:grid;
- grid-template-columns:repeat(4,1fr);
- gap:12px;
- margin:22px 0;
-}
-
-.stat{
- background:#111126;
- border:1px solid var(--line);
- padding:16px;
- border-radius:14px;
- transition:.3s;
-}
-
-.stat:hover{
- border-color:#9275ff70;
- transform:translateY(-4px);
- box-shadow:0 8px 25px #9275ff18;
-}
-
-.stat strong{
- display:block;
- font-size:24px;
- color:var(--gold);
- margin-bottom:5px;
-}
-
-.stat span{
- font-size:11px;
- color:var(--muted);
-}
-
-.progress-wrap{
- height:7px;
- background:#302d49;
- border-radius:20px;
- overflow:hidden;
- margin-top:8px;
-}
-
-.progress-bar{
- height:100%;
- background:linear-gradient(90deg,var(--purple),var(--gold));
- width:0;
- transition:width 1s ease;
- box-shadow:0 0 12px #9275ff90;
-}
+.section-title{font-size:24px;margin:8px 0}
+.section-sub{font-size:13px;color:var(--muted);line-height:1.6}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:22px 0}
+.stat{background:#111126;border:1px solid var(--line);padding:16px;border-radius:14px;transition:.3s}
+.stat:hover{border-color:#9275ff70;transform:translateY(-4px);box-shadow:0 8px 25px #9275ff18}
+.stat strong{display:block;font-size:24px;color:var(--gold);margin-bottom:5px}
+.stat span{font-size:11px;color:var(--muted)}
+.progress-wrap{height:7px;background:#302d49;border-radius:20px;overflow:hidden;margin-top:8px}
+.progress-bar{height:100%;background:linear-gradient(90deg,var(--purple),var(--gold));width:0;transition:width 1s ease;box-shadow:0 0 12px #9275ff90}
 
 /* WORLD CARDS */
-.world-grid{
- display:grid;
- grid-template-columns:repeat(2,1fr);
- gap:15px;
- margin-top:22px;
-}
-
+.world-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:15px;margin-top:22px}
 .world-card{
- background:linear-gradient(145deg,#242044,#151429);
- border:1px solid var(--line);
- border-radius:17px;
- padding:20px;
- display:flex;
- flex-direction:column;
- gap:12px;
- position:relative;
- overflow:hidden;
- transition:transform .3s,border-color .3s,box-shadow .3s;
+ background:linear-gradient(145deg,#242044,#151429);border:1px solid var(--line);
+ border-radius:17px;padding:20px;display:flex;flex-direction:column;gap:12px;
+ position:relative;overflow:hidden;transition:transform .3s,border-color .3s,box-shadow .3s;
  animation:fadeUp .6s ease both;
 }
-
-.world-card::before{
- content:"";
- position:absolute;
- width:180px;
- height:180px;
- background:radial-gradient(circle,#9275ff18,transparent 70%);
- right:-80px;
- top:-80px;
- pointer-events:none;
-}
-
-.world-card:hover{
- transform:translateY(-7px);
- border-color:#9275ff90;
- box-shadow:0 15px 35px #0005,0 0 20px #9275ff18;
-}
-
-.world-icon{
- font-size:32px;
- display:inline-block;
- animation:float 4s ease-in-out infinite;
-}
-
-.world-card h3{
- font-size:18px;
- margin-top:5px;
-}
-
-.world-card p{
- font-size:12px;
- color:var(--muted);
- line-height:1.6;
- flex:1;
-}
-
-.world-meta{
- display:flex;
- gap:7px;
- flex-wrap:wrap;
-}
-
-.pill{
- font-size:10px;
- padding:6px 9px;
- border-radius:30px;
- background:#302b50;
- color:#ded5ff;
-}
-
-.pill.done{
- background:#164b3b;
- color:#8af0c4;
-}
-
-.card-bottom{
- display:flex;
- justify-content:space-between;
- align-items:center;
- gap:10px;
-}
+.world-card::before{content:"";position:absolute;width:180px;height:180px;background:radial-gradient(circle,#9275ff18,transparent 70%);right:-80px;top:-80px;pointer-events:none}
+.world-card:hover{transform:translateY(-7px);border-color:#9275ff90;box-shadow:0 15px 35px #0005,0 0 20px #9275ff18}
+.world-icon{font-size:32px;display:inline-block;animation:float 4s ease-in-out infinite}
+.world-card h3{font-size:18px;margin-top:5px}
+.world-card p{font-size:12px;color:var(--muted);line-height:1.6;flex:1}
+.world-meta{display:flex;gap:7px;flex-wrap:wrap}
+.pill{font-size:10px;padding:6px 9px;border-radius:30px;background:#302b50;color:#ded5ff}
+.pill.done{background:#164b3b;color:#8af0c4}
+.card-bottom{display:flex;justify-content:space-between;align-items:center;gap:10px}
 
 /* LEADERBOARD */
 .leaderboard{margin-top:25px}
-
-.leader-row{
- display:flex;
- justify-content:space-between;
- gap:10px;
- padding:12px 0;
- border-bottom:1px solid var(--line);
- font-size:13px;
- animation:fadeIn .5s ease both;
-}
-
-.rank{
- color:var(--gold);
- font-weight:bold;
- margin-right:8px;
-}
+.leader-row{display:flex;justify-content:space-between;gap:10px;padding:12px 0;border-bottom:1px solid var(--line);font-size:13px;animation:fadeIn .5s ease both}
+.rank{color:var(--gold);font-weight:bold;margin-right:8px}
 
 /* GAME */
-.game-head{
- display:flex;
- justify-content:space-between;
- gap:12px;
- align-items:center;
- flex-wrap:wrap;
-}
-
-.game-info{
- display:flex;
- gap:9px;
- flex-wrap:wrap;
-}
-
-.game-chip{
- background:#24213f;
- border:1px solid var(--line);
- padding:9px 12px;
- border-radius:11px;
- font-size:12px;
- transition:.2s;
-}
-
-.game-chip:hover{
- border-color:#9275ff80;
-}
-
-.timerbar{
- height:9px;
- background:#302d49;
- border-radius:20px;
- overflow:hidden;
- margin:20px 0;
-}
-
-.timerfill{
- height:100%;
- width:100%;
- background:var(--green);
- transition:width 1s linear,background .3s;
- border-radius:20px;
-}
-
-.timerfill.danger{
- animation:pulseTimer .7s infinite;
-}
-
-.question-box{
- padding:25px 0;
-}
-
-.question-count{
- color:var(--gold);
- font-size:12px;
- font-weight:bold;
- letter-spacing:1px;
-}
-
-.question-box h2{
- font-size:clamp(19px,3vw,26px);
- line-height:1.5;
- margin:15px 0 24px;
-}
-
-.options{
- display:grid;
- gap:11px;
-}
-
-.option{
- text-align:left;
- padding:15px;
- border:1px solid var(--line);
- background:#17162e;
- color:white;
- border-radius:13px;
- line-height:1.5;
- transition:background .2s,border-color .2s,transform .2s;
- animation:fadeUp .35s ease both;
-}
-
-.option:hover:not(:disabled){
- border-color:var(--purple);
- background:#24203f;
- transform:translateX(4px);
-}
-
-.option.correct{
- border-color:var(--green);
- background:#143d32;
- animation:correctPulse .4s ease;
-}
-
-.option.wrong{
- border-color:var(--red);
- background:#482333;
- animation:shake .35s ease;
-}
-
+.game-head{display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap}
+.game-info{display:flex;gap:9px;flex-wrap:wrap}
+.game-chip{background:#24213f;border:1px solid var(--line);padding:9px 12px;border-radius:11px;font-size:12px;transition:.2s}
+.game-chip:hover{border-color:#9275ff80}
+.timerbar{height:9px;background:#302d49;border-radius:20px;overflow:hidden;margin:20px 0}
+.timerfill{height:100%;width:100%;background:var(--green);transition:width 1s linear,background .3s;border-radius:20px}
+.timerfill.danger{animation:pulseTimer .7s infinite}
+.question-box{padding:25px 0}
+.question-count{color:var(--gold);font-size:12px;font-weight:bold;letter-spacing:1px}
+.question-box h2{font-size:clamp(19px,3vw,26px);line-height:1.5;margin:15px 0 24px}
+.options{display:grid;gap:11px}
+.option{text-align:left;padding:15px;border:1px solid var(--line);background:#17162e;color:white;border-radius:13px;line-height:1.5;transition:background .2s,border-color .2s,transform .2s;animation:fadeUp .35s ease both}
+.option:hover:not(:disabled){border-color:var(--purple);background:#24203f;transform:translateX(4px)}
+.option.correct{border-color:var(--green);background:#143d32;animation:correctPulse .4s ease}
+.option.wrong{border-color:var(--red);background:#482333;animation:shake .35s ease}
 .option:disabled{cursor:default}
-
-.feedback{
- margin-top:17px;
- padding:15px;
- border-radius:12px;
- line-height:1.7;
- font-size:13px;
- animation:fadeUp .35s ease;
-}
-
-.feedback.good{
- background:#143d32;
- color:#a9f4d2;
-}
-
-.feedback.bad{
- background:#482333;
- color:#ffd0d8;
-}
-
-.game-actions{
- display:flex;
- justify-content:space-between;
- gap:10px;
- margin-top:20px;
- flex-wrap:wrap;
-}
+.feedback{margin-top:17px;padding:15px;border-radius:12px;line-height:1.7;font-size:13px;animation:fadeUp .35s ease}
+.feedback.good{background:#143d32;color:#a9f4d2}
+.feedback.bad{background:#482333;color:#ffd0d8}
+.game-actions{display:flex;justify-content:space-between;gap:10px;margin-top:20px;flex-wrap:wrap}
 
 /* RESULT */
-.result{
- text-align:center;
- padding:35px 20px;
-}
+.result{text-align:center;padding:35px 20px}
+.result .big{font-size:55px;margin-bottom:12px;display:inline-block;animation:float 3s ease-in-out infinite}
+.result h2{font-size:28px;margin-bottom:10px}
+.result p{color:var(--muted);line-height:1.7}
+.result-score{font-size:27px;color:var(--gold);font-weight:bold;margin:18px;text-shadow:0 0 18px #e8bd6940}
+.footer{text-align:center;color:#716d8c;font-size:11px;margin-top:35px}
 
-.result .big{
- font-size:55px;
- margin-bottom:12px;
- display:inline-block;
- animation:float 3s ease-in-out infinite;
-}
+/* TOAST & TRANSITIONS */
+.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:#292642;border:1px solid var(--line);padding:13px 18px;border-radius:12px;z-index:20;font-size:13px;display:none;max-width:90%;box-shadow:0 10px 30px #0006;animation:fadeUp .3s ease}
+.screen-enter{animation:fadeUp .55s ease both}
+.question-enter{animation:fadeUp .4s ease both}
+.confetti-piece{position:fixed;top:-15px;width:9px;height:14px;z-index:30;pointer-events:none;animation:confettiFall linear forwards}
+@keyframes confettiFall{0%{transform:translateY(-10px) rotate(0);opacity:1}100%{transform:translateY(110vh) rotate(720deg);opacity:0}}
 
-.result h2{
- font-size:28px;
- margin-bottom:10px;
-}
-
-.result p{
- color:var(--muted);
- line-height:1.7;
-}
-
-.result-score{
- font-size:27px;
- color:var(--gold);
- font-weight:bold;
- margin:18px;
- text-shadow:0 0 18px #e8bd6940;
-}
-
-.footer{
- text-align:center;
- color:#716d8c;
- font-size:11px;
- margin-top:35px;
-}
-
-/* TOAST */
-.toast{
- position:fixed;
- bottom:20px;
- left:50%;
- transform:translateX(-50%);
- background:#292642;
- border:1px solid var(--line);
- padding:13px 18px;
- border-radius:12px;
- z-index:20;
- font-size:13px;
- display:none;
- max-width:90%;
- box-shadow:0 10px 30px #0006;
- animation:fadeUp .3s ease;
-}
-
-/* SCREEN TRANSITION */
-.screen-enter{
- animation:fadeUp .55s ease both;
-}
-
-.question-enter{
- animation:fadeUp .4s ease both;
-}
-
-/* CONFETTI */
-.confetti-piece{
- position:fixed;
- top:-15px;
- width:9px;
- height:14px;
- z-index:30;
- pointer-events:none;
- animation:confettiFall linear forwards;
-}
-
-@keyframes confettiFall{
- 0%{transform:translateY(-10px) rotate(0deg);opacity:1}
- 100%{transform:translateY(110vh) rotate(720deg);opacity:0}
-}
-
-/* RESPONSIVE */
 @media(max-width:650px){
  .stats{grid-template-columns:repeat(2,1fr)}
  .world-grid{grid-template-columns:1fr}
@@ -652,26 +259,30 @@ body::after{
  .game-actions button{flex:1}
  .card-bottom{align-items:flex-start}
 }
-
 @media(prefers-reduced-motion:reduce){
- *,*::before,*::after{
-  animation-duration:.01ms!important;
-  animation-iteration-count:1!important;
-  scroll-behavior:auto!important;
-  transition-duration:.01ms!important;
- }
+ *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important;transition-duration:.01ms!important}
 }
 </style>
 </head>
-
 <body>
-<div class="container">
 
-<header class="topbar">
- <div>
-  <div class="logo">FINANCE<span>VERSE</span></div>
-  <div class="tagline">ECONOMICS ADVENTURE GAME</div>
+<!-- OPENING OTOMATIS -->
+<div id="introScreen">
+ <div class="intro-stars"></div>
+ <div class="intro-glow"></div>
+ <div class="intro-portal"></div>
+ <div class="intro-content">
+  <div class="intro-symbol">✦</div>
+  <div class="intro-title">FINANCE<span>VERSE</span></div>
+  <div class="intro-subtitle">YOUR FINANCIAL ADVENTURE BEGINS</div>
+  <div class="intro-loading"><span></span></div>
+  <div class="intro-caption">PREPARING YOUR JOURNEY...</div>
  </div>
+</div>
+
+<div class="container">
+<header class="topbar">
+ <div><div class="logo">FINANCE<span>VERSE</span></div><div class="tagline">ECONOMICS ADVENTURE GAME</div></div>
  <button id="logoutBtn" class="btn secondary hidden" onclick="logout()">Keluar</button>
 </header>
 
@@ -692,53 +303,42 @@ body::after{
   <div class="eyebrow">PLAYER DASHBOARD</div>
   <h1 style="font-size:28px;margin:10px 0">Halo, <span id="welcomeName" style="color:var(--gold)">Player</span>!</h1>
   <p class="section-sub">Pilih world yang ingin kamu jelajahi. Semua world langsung terbuka!</p>
-
   <div class="stats">
    <div class="stat"><strong id="statScore">0</strong><span>TOTAL SCORE</span></div>
    <div class="stat"><strong id="statXP">0</strong><span>TOTAL XP</span></div>
    <div class="stat"><strong id="statLevel">1</strong><span>PLAYER LEVEL</span></div>
    <div class="stat"><strong id="statDone">0/5</strong><span>WORLD SELESAI</span></div>
   </div>
-
   <div class="small">Progress penyelesaian world</div>
   <div class="progress-wrap"><div id="overallProgress" class="progress-bar"></div></div>
  </div>
-
  <div style="margin-top:28px">
   <div class="eyebrow">CHOOSE YOUR ADVENTURE</div>
   <h2 class="section-title">Pilih World</h2>
   <p class="section-sub">10 soal per world • 30 detik per soal • 3 nyawa</p>
   <div id="worldGrid" class="world-grid"></div>
  </div>
-
  <div class="panel leaderboard">
-  <div class="eyebrow">TOP PLAYERS</div>
-  <h2 class="section-title">Leaderboard</h2>
+  <div class="eyebrow">TOP PLAYERS</div><h2 class="section-title">Leaderboard</h2>
   <div id="leaderboardList" class="small">Memuat leaderboard...</div>
  </div>
 </section>
 
 <section id="gameScreen" class="panel hidden">
  <div class="game-head">
-  <div>
-   <div class="eyebrow" id="gameWorldNumber">WORLD 01</div>
-   <h2 id="gameWorldTitle" style="margin-top:6px">Perpajakan dan APBN</h2>
-  </div>
+  <div><div class="eyebrow" id="gameWorldNumber">WORLD 01</div><h2 id="gameWorldTitle" style="margin-top:6px">Perpajakan dan APBN</h2></div>
   <div class="game-info">
    <div class="game-chip">❤️ <b id="lives">3</b></div>
    <div class="game-chip">⭐ <b id="runScore">0</b></div>
    <div class="game-chip">⏱ <b id="timerText">30</b>s</div>
   </div>
  </div>
-
  <div class="timerbar"><div id="timerFill" class="timerfill"></div></div>
-
  <div class="question-box">
   <div class="question-count" id="questionCount">PERTANYAAN 1 / 10</div>
   <h2 id="questionText"></h2>
   <div id="options" class="options"></div>
   <div id="feedback" class="feedback hidden"></div>
-
   <div class="game-actions">
    <button class="btn secondary" onclick="backToDashboard()">Kembali ke Dashboard</button>
    <button id="nextBtn" class="btn gold hidden" onclick="nextQuestion()">SOAL BERIKUTNYA</button>
@@ -754,716 +354,357 @@ body::after{
   <p id="resultDescription"></p>
   <div class="result-score" id="resultScore">+100 XP</div>
   <p id="resultExtra"></p>
-
   <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:25px">
    <button class="btn gold" onclick="backToDashboard()">KEMBALI KE WORLD</button>
    <button class="btn secondary" onclick="replayCurrent()">ULANGI WORLD</button>
   </div>
  </div>
 </section>
-
 <div class="footer">FINANCEVERSE • Learn Economics Through Adventure</div>
 </div>
-
 <div id="toast" class="toast"></div>
 
 <script>
-/* ===================================
-   1. KONFIGURASI SUPABASE
-   =================================== */
+/* KONFIGURASI SUPABASE */
 const SUPABASE_URL="https://pnewwrfwvldrefljgztm.supabase.co";
 const SUPABASE_KEY="sb_publishable_VNX2JHjMoYVYQnHX37dZJA_8I1ReKyE";
 const TABLE="financeverse_players";
 
-/* ===================================
-   2. BANK SOAL WORLD 01-05
-   =================================== */
+/* BANK SOAL WORLD 01-05 */
 const worlds=[
-{
- id:1,icon:"💰",title:"Perpajakan dan APBN",
- description:"Kenali pajak, anggaran negara, dan kebijakan fiskal.",
- questions:[
- ["Pajak merupakan kontribusi wajib kepada negara yang bersifat ...",["Sukarela dan mendapat imbalan langsung","Memaksa berdasarkan undang-undang tanpa imbalan langsung","Pinjaman yang harus dikembalikan","Sumbangan khusus masyarakat"],1,"Pajak bersifat wajib berdasarkan undang-undang dan tidak memberikan imbalan langsung."],
- ["Fungsi pajak sebagai sumber penerimaan negara disebut ...",["Regulerend","Budgetair","Distribusi","Stabilisasi"],1,"Fungsi budgetair adalah pajak untuk membiayai pengeluaran negara."],
- ["Pajak atas penghasilan seseorang atau badan disebut ...",["PPN","PBB","PPh","Bea materai"],2,"PPh adalah Pajak Penghasilan."],
- ["PPN termasuk jenis pajak ...",["Langsung","Tidak langsung","Pajak pribadi","Pajak warisan"],1,"PPN merupakan pajak tidak langsung yang dibebankan melalui transaksi barang atau jasa."],
- ["Harga barang Rp200.000 dikenai tarif pajak ilustratif 11%. Berapa pajaknya?",["Rp11.000","Rp20.000","Rp22.000","Rp31.000"],2,"11% × Rp200.000 = Rp22.000."],
- ["APBN disetujui oleh pemerintah bersama ...",["Mahkamah Agung","DPR","Bank Indonesia","OJK"],1,"APBN dibahas dan disetujui bersama oleh pemerintah dan DPR."],
- ["Pengeluaran negara lebih besar daripada penerimaan disebut ...",["Surplus","Defisit","Berimbang","Likuid"],1,"Defisit terjadi ketika belanja negara lebih besar daripada pendapatannya."],
- ["Contoh belanja negara adalah ...",["Pajak penghasilan warga","Pembangunan jalan nasional","Pembayaran pajak kendaraan","Pembelian saham pribadi"],1,"Pembangunan jalan nasional merupakan belanja pemerintah."],
- ["Kebijakan fiskal menggunakan instrumen ...",["Suku bunga saja","Pajak dan belanja pemerintah","Harga saham","Kurs perusahaan"],1,"Kebijakan fiskal mengatur penerimaan pajak dan pengeluaran pemerintah."],
- ["Pemerintah meningkatkan belanja infrastruktur saat ekonomi melemah. Ini merupakan kebijakan ...",["Fiskal ekspansif","Fiskal kontraktif","Moneter kontraktif","Proteksi perdagangan"],0,"Fiskal ekspansif mendorong kegiatan ekonomi melalui peningkatan belanja atau pengurangan pajak."]
- ]
-},
-{
- id:2,icon:"🤝",title:"Koperasi dan Badan Usaha",
- description:"Pelajari koperasi, BUMN, BUMD, dan badan usaha swasta.",
- questions:[
- ["Asas utama koperasi Indonesia adalah ...",["Persaingan","Kekeluargaan","Monopoli","Individualisme"],1,"Koperasi Indonesia berasaskan kekeluargaan."],
- ["Kekuasaan tertinggi dalam koperasi berada pada ...",["Ketua","Manajer","Rapat anggota","Bendahara"],2,"Rapat anggota merupakan pemegang kekuasaan tertinggi dalam koperasi."],
- ["SHU merupakan singkatan dari ...",["Sisa Hasil Usaha","Sistem Hasil Utama","Sumber Hasil Usaha","Simpanan Harian Umum"],0,"SHU adalah Sisa Hasil Usaha."],
- ["SHU Rp10.000.000. Jika bagian jasa anggota 40%, alokasinya adalah ...",["Rp2.000.000","Rp4.000.000","Rp6.000.000","Rp8.000.000"],1,"40% × Rp10.000.000 = Rp4.000.000."],
- ["Badan usaha yang modalnya dimiliki negara disebut ...",["BUMS","BUMN","Firma","CV"],1,"BUMN adalah badan usaha yang modalnya dimiliki negara sesuai ketentuan."],
- ["Badan usaha milik pemerintah daerah disebut ...",["BUMD","BUMN","PT asing","Koperasi primer"],0,"BUMD merupakan badan usaha milik pemerintah daerah."],
- ["Badan usaha yang modalnya dimiliki pihak swasta disebut ...",["BUMN","BUMD","BUMS","Lembaga negara"],2,"BUMS adalah badan usaha milik swasta."],
- ["Badan usaha yang modalnya terbagi atas saham disebut ...",["Firma","Perseroan Terbatas","Persekutuan perdata","Koperasi sekolah"],1,"Perseroan Terbatas memiliki modal yang terbagi dalam saham."],
- ["Tujuan utama koperasi adalah ...",["Memaksimalkan keuntungan satu pemilik","Meningkatkan kesejahteraan anggota","Menguasai seluruh pasar","Menghapus persaingan"],1,"Koperasi bertujuan meningkatkan kesejahteraan anggota dan masyarakat."],
- ["Keputusan tertinggi koperasi ditetapkan melalui ...",["Pemilik modal terbesar","Rapat anggota","Pemasok utama","Pelanggan"],1,"Keputusan penting koperasi ditetapkan melalui rapat anggota."]
- ]
-},
-{
- id:3,icon:"👩‍💼",title:"Ketenagakerjaan",
- description:"Pahami tenaga kerja, pengangguran, upah, dan kesempatan kerja.",
- questions:[
- ["Penduduk yang mampu melakukan pekerjaan disebut ...",["Tenaga kerja","Bukan angkatan kerja","Konsumen","Pengusaha"],0,"Tenaga kerja adalah penduduk yang mampu melakukan pekerjaan."],
- ["Angkatan kerja terdiri atas ...",["Pelajar saja","Penduduk bekerja dan pengangguran yang mencari kerja","Seluruh penduduk","Pensiunan dan anak-anak"],1,"Angkatan kerja meliputi penduduk bekerja dan pengangguran yang mencari pekerjaan."],
- ["Pengangguran karena sedang berpindah pekerjaan disebut ...",["Struktural","Friksional","Musiman","Siklis"],1,"Pengangguran friksional terjadi saat seseorang berada dalam masa transisi mencari pekerjaan."],
- ["Pengangguran akibat perubahan struktur ekonomi atau teknologi disebut ...",["Friksional","Musiman","Struktural","Terselubung"],2,"Pengangguran struktural terjadi karena keterampilan pekerja tidak sesuai kebutuhan baru."],
- ["Pengangguran akibat resesi ekonomi disebut ...",["Siklis","Musiman","Friksional","Sukarela"],0,"Pengangguran siklis berkaitan dengan penurunan kegiatan ekonomi."],
- ["Angkatan kerja 800 orang dan yang bekerja 720 orang. Jumlah pengangguran adalah ...",["60 orang","70 orang","80 orang","90 orang"],2,"800 − 720 = 80 orang."],
- ["Upah berdasarkan jumlah barang yang dihasilkan disebut upah ...",["Waktu","Borongan","Satuan hasil","Premi tetap"],2,"Upah satuan hasil dihitung berdasarkan jumlah output yang dihasilkan."],
- ["Cara meningkatkan kualitas tenaga kerja adalah ...",["Mengurangi pelatihan","Membatasi pendidikan","Mengadakan pelatihan keterampilan","Mengurangi teknologi"],2,"Pendidikan dan pelatihan meningkatkan kompetensi tenaga kerja."],
- ["Kesempatan kerja menunjukkan ...",["Jumlah barang","Tersedianya lapangan pekerjaan","Jumlah penduduk sekolah","Penerimaan pajak"],1,"Kesempatan kerja menggambarkan ketersediaan pekerjaan bagi tenaga kerja."],
- ["Perusahaan membutuhkan tenaga digital marketing, tetapi pencari kerja belum memiliki keterampilan tersebut. Solusinya adalah ...",["Menghapus lowongan","Pelatihan ulang atau reskilling","Menurunkan semua upah","Mengurangi pendidikan"],1,"Reskilling membantu pekerja memperoleh keterampilan baru sesuai kebutuhan pasar."]
- ]
-},
-{
- id:4,icon:"🌍",title:"Sejarah dan Sistem Ekonomi",
- description:"Jelajahi perkembangan ilmu ekonomi dan berbagai sistem ekonomi.",
- questions:[
- ["Tokoh yang dikenal sebagai Bapak Ekonomi Modern adalah ...",["Adam Smith","Karl Marx","John Maynard Keynes","David Ricardo"],0,"Adam Smith dikenal melalui karyanya The Wealth of Nations."],
- ["The Wealth of Nations diterbitkan pada tahun ...",["1776","1817","1919","1945"],0,"The Wealth of Nations karya Adam Smith diterbitkan pada 1776."],
- ["Kelangkaan sumber daya terjadi karena ...",["Sumber daya tidak terbatas","Kebutuhan manusia terbatas","Sumber daya terbatas sedangkan kebutuhan tidak terbatas","Semua barang gratis"],2,"Kelangkaan membuat manusia harus menentukan pilihan dalam menggunakan sumber daya."],
- ["Sistem ekonomi yang mengandalkan adat dan kebiasaan disebut ...",["Pasar","Komando","Tradisional","Campuran"],2,"Sistem ekonomi tradisional mengandalkan kebiasaan turun-temurun."],
- ["Dalam sistem ekonomi komando, keputusan utama ditentukan oleh ...",["Mekanisme pasar","Pemerintah pusat","Konsumen","Perusahaan asing"],1,"Pemerintah memiliki peran dominan dalam mengatur kegiatan ekonomi."],
- ["Sistem ekonomi pasar memberikan peran besar kepada ...",["Pemerintah pusat","Mekanisme permintaan dan penawaran","Adat istiadat","Badan internasional"],1,"Harga dan keputusan ekonomi banyak ditentukan oleh interaksi pasar."],
- ["Sistem ekonomi campuran menggabungkan peran ...",["Pasar dan pemerintah","Petani saja","Negara dan organisasi asing","Konsumen dan bank saja"],0,"Sistem campuran menggabungkan mekanisme pasar dan campur tangan pemerintah."],
- ["Masalah pokok ekonomi modern meliputi ...",["Apa, bagaimana, dan untuk siapa barang diproduksi","Kapan libur","Siapa paling kaya","Jumlah perusahaan asing"],0,"Masalah pokok ekonomi modern adalah what, how, dan for whom."],
- ["Dalam sistem ekonomi pasar, harga terbentuk melalui ...",["Keputusan satu produsen","Interaksi permintaan dan penawaran","Perintah konsumen","Kebijakan koperasi saja"],1,"Harga pasar terbentuk melalui interaksi permintaan dan penawaran."],
- ["Pemerintah mengatur persaingan, sementara perusahaan swasta bebas berproduksi. Ini mendekati sistem ...",["Tradisional","Komando murni","Campuran","Subsisten"],2,"Sistem campuran memberikan ruang bagi pasar sekaligus regulasi pemerintah."]
- ]
-},
-{
- id:5,icon:"📊",title:"Akuntansi Dasar",
- description:"Kuasai persamaan akuntansi, jurnal, buku besar, dan laporan keuangan.",
- questions:[
- ["Persamaan dasar akuntansi yang benar adalah ...",["Aset = Utang + Modal","Aset = Pendapatan − Beban","Modal = Aset + Utang","Utang = Aset + Modal"],0,"Persamaan dasar akuntansi adalah aset sama dengan liabilitas ditambah ekuitas."],
- ["Berikut yang termasuk aset adalah ...",["Utang usaha","Modal pemilik","Kas","Pendapatan jasa"],2,"Kas merupakan aset karena memiliki manfaat ekonomi bagi perusahaan."],
- ["Kewajiban perusahaan kepada pihak lain disebut ...",["Aset","Liabilitas","Modal","Pendapatan"],1,"Liabilitas adalah kewajiban atau utang perusahaan."],
- ["Pemilik menyetorkan uang tunai Rp5.000.000 sebagai modal awal. Dampaknya adalah ...",["Kas naik dan modal naik","Kas turun dan utang naik","Aset turun dan modal naik","Utang naik dan modal turun"],0,"Setoran pemilik menambah kas dan menambah modal."],
- ["Perusahaan membeli perlengkapan tunai Rp500.000. Dampaknya adalah ...",["Kas naik dan perlengkapan turun","Kas turun dan perlengkapan naik","Utang naik dan kas naik","Modal turun dan utang naik"],1,"Pembelian tunai mengurangi kas dan menambah perlengkapan."],
- ["Pencatatan transaksi pertama kali dilakukan dalam ...",["Buku besar","Jurnal umum","Neraca saldo","Laporan laba rugi"],1,"Jurnal umum menjadi tempat pencatatan awal transaksi secara kronologis."],
- ["Perusahaan membayar listrik tunai Rp300.000. Akun yang didebit adalah ...",["Kas","Utang usaha","Beban listrik","Modal"],2,"Beban bertambah di sisi debit, sedangkan kas berkurang di sisi kredit."],
- ["Fungsi buku besar adalah ...",["Mengelompokkan transaksi berdasarkan akun","Mencatat pelanggan saja","Menghitung pajak negara","Menyusun jadwal pegawai"],0,"Buku besar mengelompokkan transaksi berdasarkan akun."],
- ["Pendapatan Rp8.000.000 dan beban Rp5.500.000. Laba perusahaan adalah ...",["Rp1.500.000","Rp2.000.000","Rp2.500.000","Rp3.500.000"],2,"Laba = Rp8.000.000 − Rp5.500.000 = Rp2.500.000."],
- ["Laporan yang menunjukkan aset, liabilitas, dan ekuitas disebut ...",["Laporan laba rugi","Laporan posisi keuangan","Laporan arus kas","Laporan perubahan harga"],1,"Laporan posisi keuangan atau neraca menunjukkan aset, liabilitas, dan ekuitas."]
- ]
-}
+{id:1,icon:"💰",title:"Perpajakan dan APBN",description:"Kenali pajak, anggaran negara, dan kebijakan fiskal.",questions:[
+["Pajak merupakan kontribusi wajib kepada negara yang bersifat ...",["Sukarela dan mendapat imbalan langsung","Memaksa berdasarkan undang-undang tanpa imbalan langsung","Pinjaman yang harus dikembalikan","Sumbangan khusus masyarakat"],1,"Pajak bersifat wajib berdasarkan undang-undang dan tidak memberikan imbalan langsung."],
+["Fungsi pajak sebagai sumber penerimaan negara disebut ...",["Regulerend","Budgetair","Distribusi","Stabilisasi"],1,"Fungsi budgetair adalah pajak untuk membiayai pengeluaran negara."],
+["Pajak atas penghasilan seseorang atau badan disebut ...",["PPN","PBB","PPh","Bea materai"],2,"PPh adalah Pajak Penghasilan."],
+["PPN termasuk jenis pajak ...",["Langsung","Tidak langsung","Pajak pribadi","Pajak warisan"],1,"PPN merupakan pajak tidak langsung yang dibebankan melalui transaksi barang atau jasa."],
+["Harga barang Rp200.000 dikenai tarif pajak ilustratif 11%. Berapa pajaknya?",["Rp11.000","Rp20.000","Rp22.000","Rp31.000"],2,"11% × Rp200.000 = Rp22.000."],
+["APBN disetujui oleh pemerintah bersama ...",["Mahkamah Agung","DPR","Bank Indonesia","OJK"],1,"APBN dibahas dan disetujui bersama oleh pemerintah dan DPR."],
+["Pengeluaran negara lebih besar daripada penerimaan disebut ...",["Surplus","Defisit","Berimbang","Likuid"],1,"Defisit terjadi ketika belanja negara lebih besar daripada pendapatannya."],
+["Contoh belanja negara adalah ...",["Pajak penghasilan warga","Pembangunan jalan nasional","Pembayaran pajak kendaraan","Pembelian saham pribadi"],1,"Pembangunan jalan nasional merupakan belanja pemerintah."],
+["Kebijakan fiskal menggunakan instrumen ...",["Suku bunga saja","Pajak dan belanja pemerintah","Harga saham","Kurs perusahaan"],1,"Kebijakan fiskal mengatur penerimaan pajak dan pengeluaran pemerintah."],
+["Pemerintah meningkatkan belanja infrastruktur saat ekonomi melemah. Ini merupakan kebijakan ...",["Fiskal ekspansif","Fiskal kontraktif","Moneter kontraktif","Proteksi perdagangan"],0,"Fiskal ekspansif mendorong kegiatan ekonomi melalui peningkatan belanja atau pengurangan pajak."]
+]},
+{id:2,icon:"🤝",title:"Koperasi dan Badan Usaha",description:"Pelajari koperasi, BUMN, BUMD, dan badan usaha swasta.",questions:[
+["Asas utama koperasi Indonesia adalah ...",["Persaingan","Kekeluargaan","Monopoli","Individualisme"],1,"Koperasi Indonesia berasaskan kekeluargaan."],
+["Kekuasaan tertinggi dalam koperasi berada pada ...",["Ketua","Manajer","Rapat anggota","Bendahara"],2,"Rapat anggota merupakan pemegang kekuasaan tertinggi dalam koperasi."],
+["SHU merupakan singkatan dari ...",["Sisa Hasil Usaha","Sistem Hasil Utama","Sumber Hasil Usaha","Simpanan Harian Umum"],0,"SHU adalah Sisa Hasil Usaha."],
+["SHU Rp10.000.000. Jika bagian jasa anggota 40%, alokasinya adalah ...",["Rp2.000.000","Rp4.000.000","Rp6.000.000","Rp8.000.000"],1,"40% × Rp10.000.000 = Rp4.000.000."],
+["Badan usaha yang modalnya dimiliki negara disebut ...",["BUMS","BUMN","Firma","CV"],1,"BUMN adalah badan usaha yang modalnya dimiliki negara sesuai ketentuan."],
+["Badan usaha milik pemerintah daerah disebut ...",["BUMD","BUMN","PT asing","Koperasi primer"],0,"BUMD merupakan badan usaha milik pemerintah daerah."],
+["Badan usaha yang modalnya dimiliki pihak swasta disebut ...",["BUMN","BUMD","BUMS","Lembaga negara"],2,"BUMS adalah badan usaha milik swasta."],
+["Badan usaha yang modalnya terbagi atas saham disebut ...",["Firma","Perseroan Terbatas","Persekutuan perdata","Koperasi sekolah"],1,"Perseroan Terbatas memiliki modal yang terbagi dalam saham."],
+["Tujuan utama koperasi adalah ...",["Memaksimalkan keuntungan satu pemilik","Meningkatkan kesejahteraan anggota","Menguasai seluruh pasar","Menghapus persaingan"],1,"Koperasi bertujuan meningkatkan kesejahteraan anggota dan masyarakat."],
+["Keputusan tertinggi koperasi ditetapkan melalui ...",["Pemilik modal terbesar","Rapat anggota","Pemasok utama","Pelanggan"],1,"Keputusan penting koperasi ditetapkan melalui rapat anggota."]
+]},
+{id:3,icon:"👩‍💼",title:"Ketenagakerjaan",description:"Pahami tenaga kerja, pengangguran, upah, dan kesempatan kerja.",questions:[
+["Penduduk yang mampu melakukan pekerjaan disebut ...",["Tenaga kerja","Bukan angkatan kerja","Konsumen","Pengusaha"],0,"Tenaga kerja adalah penduduk yang mampu melakukan pekerjaan."],
+["Angkatan kerja terdiri atas ...",["Pelajar saja","Penduduk bekerja dan pengangguran yang mencari kerja","Seluruh penduduk","Pensiunan dan anak-anak"],1,"Angkatan kerja meliputi penduduk bekerja dan pengangguran yang mencari pekerjaan."],
+["Pengangguran karena sedang berpindah pekerjaan disebut ...",["Struktural","Friksional","Musiman","Siklis"],1,"Pengangguran friksional terjadi saat seseorang berada dalam masa transisi mencari pekerjaan."],
+["Pengangguran akibat perubahan struktur ekonomi atau teknologi disebut ...",["Friksional","Musiman","Struktural","Terselubung"],2,"Pengangguran struktural terjadi karena keterampilan pekerja tidak sesuai kebutuhan baru."],
+["Pengangguran akibat resesi ekonomi disebut ...",["Siklis","Musiman","Friksional","Sukarela"],0,"Pengangguran siklis berkaitan dengan penurunan kegiatan ekonomi."],
+["Angkatan kerja 800 orang dan yang bekerja 720 orang. Jumlah pengangguran adalah ...",["60 orang","70 orang","80 orang","90 orang"],2,"800 − 720 = 80 orang."],
+["Upah berdasarkan jumlah barang yang dihasilkan disebut upah ...",["Waktu","Borongan","Satuan hasil","Premi tetap"],2,"Upah satuan hasil dihitung berdasarkan jumlah output yang dihasilkan."],
+["Cara meningkatkan kualitas tenaga kerja adalah ...",["Mengurangi pelatihan","Membatasi pendidikan","Mengadakan pelatihan keterampilan","Mengurangi teknologi"],2,"Pendidikan dan pelatihan meningkatkan kompetensi tenaga kerja."],
+["Kesempatan kerja menunjukkan ...",["Jumlah barang","Tersedianya lapangan pekerjaan","Jumlah penduduk sekolah","Penerimaan pajak"],1,"Kesempatan kerja menggambarkan ketersediaan pekerjaan bagi tenaga kerja."],
+["Perusahaan membutuhkan tenaga digital marketing, tetapi pencari kerja belum memiliki keterampilan tersebut. Solusinya adalah ...",["Menghapus lowongan","Pelatihan ulang atau reskilling","Menurunkan semua upah","Mengurangi pendidikan"],1,"Reskilling membantu pekerja memperoleh keterampilan baru sesuai kebutuhan pasar."]
+]},
+{id:4,icon:"🌍",title:"Sejarah dan Sistem Ekonomi",description:"Jelajahi perkembangan ilmu ekonomi dan berbagai sistem ekonomi.",questions:[
+["Tokoh yang dikenal sebagai Bapak Ekonomi Modern adalah ...",["Adam Smith","Karl Marx","John Maynard Keynes","David Ricardo"],0,"Adam Smith dikenal melalui karyanya The Wealth of Nations."],
+["The Wealth of Nations diterbitkan pada tahun ...",["1776","1817","1919","1945"],0,"The Wealth of Nations karya Adam Smith diterbitkan pada 1776."],
+["Kelangkaan sumber daya terjadi karena ...",["Sumber daya tidak terbatas","Kebutuhan manusia terbatas","Sumber daya terbatas sedangkan kebutuhan tidak terbatas","Semua barang gratis"],2,"Kelangkaan membuat manusia harus menentukan pilihan dalam menggunakan sumber daya."],
+["Sistem ekonomi yang mengandalkan adat dan kebiasaan disebut ...",["Pasar","Komando","Tradisional","Campuran"],2,"Sistem ekonomi tradisional mengandalkan kebiasaan turun-temurun."],
+["Dalam sistem ekonomi komando, keputusan utama ditentukan oleh ...",["Mekanisme pasar","Pemerintah pusat","Konsumen","Perusahaan asing"],1,"Pemerintah memiliki peran dominan dalam mengatur kegiatan ekonomi."],
+["Sistem ekonomi pasar memberikan peran besar kepada ...",["Pemerintah pusat","Mekanisme permintaan dan penawaran","Adat istiadat","Badan internasional"],1,"Harga dan keputusan ekonomi banyak ditentukan oleh interaksi pasar."],
+["Sistem ekonomi campuran menggabungkan peran ...",["Pasar dan pemerintah","Petani saja","Negara dan organisasi asing","Konsumen dan bank saja"],0,"Sistem campuran menggabungkan mekanisme pasar dan campur tangan pemerintah."],
+["Masalah pokok ekonomi modern meliputi ...",["Apa, bagaimana, dan untuk siapa barang diproduksi","Kapan libur","Siapa paling kaya","Jumlah perusahaan asing"],0,"Masalah pokok ekonomi modern adalah what, how, dan for whom."],
+["Dalam sistem ekonomi pasar, harga terbentuk melalui ...",["Keputusan satu produsen","Interaksi permintaan dan penawaran","Perintah konsumen","Kebijakan koperasi saja"],1,"Harga pasar terbentuk melalui interaksi permintaan dan penawaran."],
+["Pemerintah mengatur persaingan, sementara perusahaan swasta bebas berproduksi. Ini mendekati sistem ...",["Tradisional","Komando murni","Campuran","Subsisten"],2,"Sistem campuran memberikan ruang bagi pasar sekaligus regulasi pemerintah."]
+]},
+{id:5,icon:"📊",title:"Akuntansi Dasar",description:"Kuasai persamaan akuntansi, jurnal, buku besar, dan laporan keuangan.",questions:[
+["Persamaan dasar akuntansi yang benar adalah ...",["Aset = Utang + Modal","Aset = Pendapatan − Beban","Modal = Aset + Utang","Utang = Aset + Modal"],0,"Persamaan dasar akuntansi adalah aset sama dengan liabilitas ditambah ekuitas."],
+["Berikut yang termasuk aset adalah ...",["Utang usaha","Modal pemilik","Kas","Pendapatan jasa"],2,"Kas merupakan aset karena memiliki manfaat ekonomi bagi perusahaan."],
+["Kewajiban perusahaan kepada pihak lain disebut ...",["Aset","Liabilitas","Modal","Pendapatan"],1,"Liabilitas adalah kewajiban atau utang perusahaan."],
+["Pemilik menyetorkan uang tunai Rp5.000.000 sebagai modal awal. Dampaknya adalah ...",["Kas naik dan modal naik","Kas turun dan utang naik","Aset turun dan modal naik","Utang naik dan modal turun"],0,"Setoran pemilik menambah kas dan menambah modal."],
+["Perusahaan membeli perlengkapan tunai Rp500.000. Dampaknya adalah ...",["Kas naik dan perlengkapan turun","Kas turun dan perlengkapan naik","Utang naik dan kas naik","Modal turun dan utang naik"],1,"Pembelian tunai mengurangi kas dan menambah perlengkapan."],
+["Pencatatan transaksi pertama kali dilakukan dalam ...",["Buku besar","Jurnal umum","Neraca saldo","Laporan laba rugi"],1,"Jurnal umum menjadi tempat pencatatan awal transaksi secara kronologis."],
+["Perusahaan membayar listrik tunai Rp300.000. Akun yang didebit adalah ...",["Kas","Utang usaha","Beban listrik","Modal"],2,"Beban bertambah di sisi debit, sedangkan kas berkurang di sisi kredit."],
+["Fungsi buku besar adalah ...",["Mengelompokkan transaksi berdasarkan akun","Mencatat pelanggan saja","Menghitung pajak negara","Menyusun jadwal pegawai"],0,"Buku besar mengelompokkan transaksi berdasarkan akun."],
+["Pendapatan Rp8.000.000 dan beban Rp5.500.000. Laba perusahaan adalah ...",["Rp1.500.000","Rp2.000.000","Rp2.500.000","Rp3.500.000"],2,"Laba = Rp8.000.000 − Rp5.500.000 = Rp2.500.000."],
+["Laporan yang menunjukkan aset, liabilitas, dan ekuitas disebut ...",["Laporan laba rugi","Laporan posisi keuangan","Laporan arus kas","Laporan perubahan harga"],1,"Laporan posisi keuangan atau neraca menunjukkan aset, liabilitas, dan ekuitas."]
+]}
 ];
 
-/* ===================================
-   3. STATE DAN UTILITAS
-   =================================== */
+/* STATE DAN UTILITAS */
 let player=null,currentWorld=null;
 let questionIndex=0,lives=3,runScore=0,timeLeft=30;
-let timerInterval=null,answered=false,runFinished=false;
-let toastTimer=null;
-
+let timerInterval=null,answered=false,runFinished=false,toastTimer=null;
 const $=id=>document.getElementById(id);
 
-const completedIds=()=>Array.isArray(player?.completed_world_ids)
- ?player.completed_world_ids.map(Number):[];
+/* KONVERSI ID WORLD LAMA 10-14 KE ID BARU 1-5 */
+function normalizeWorldIds(ids){
+ if(!Array.isArray(ids))return [];
+ const mapped=ids.map(Number).map(id=>id>=10&&id<=14?id-9:id);
+ return [...new Set(mapped)].filter(id=>worlds.some(w=>w.id===id)).sort((a,b)=>a-b);
+}
+const completedIds=()=>normalizeWorldIds(player?.completed_world_ids);
 
 function configReady(){
- return SUPABASE_URL.startsWith("https://")&&
- SUPABASE_KEY.startsWith("sb_publishable_");
+ return SUPABASE_URL.startsWith("https://")&&SUPABASE_KEY.startsWith("sb_publishable_");
 }
-
-function calcLevel(xp){
- return Math.floor(Number(xp||0)/100)+1;
-}
-
+function calcLevel(xp){return Math.floor(Number(xp||0)/100)+1}
 function showToast(message){
- const el=$("toast");
- el.textContent=message;
- el.style.display="block";
- clearTimeout(toastTimer);
- toastTimer=setTimeout(()=>el.style.display="none",3500);
+ const el=$("toast");el.textContent=message;el.style.display="block";
+ clearTimeout(toastTimer);toastTimer=setTimeout(()=>el.style.display="none",3500);
 }
-
 function showScreen(id){
  ["loginScreen","dashboard","gameScreen","resultScreen"].forEach(x=>{
-  $(x).classList.add("hidden");
-  $(x).classList.remove("screen-enter");
+  $(x).classList.add("hidden");$(x).classList.remove("screen-enter");
  });
-
- const target=$(id);
- target.classList.remove("hidden");
- void target.offsetWidth;
+ const target=$(id);target.classList.remove("hidden");void target.offsetWidth;
  target.classList.add("screen-enter");
-
  $("logoutBtn").classList.toggle("hidden",id==="loginScreen");
  window.scrollTo({top:0,behavior:"smooth"});
 }
-
 function escapeHTML(value){
- return String(value).replace(/[&<>"']/g,c=>({
-  "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
- }[c]));
+ return String(value).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 }
-
 function makePlayerCode(){
- return "FV"+Date.now().toString(36).toUpperCase()+
- Math.random().toString(36).slice(2,6).toUpperCase();
+ return "FV"+Date.now().toString(36).toUpperCase()+Math.random().toString(36).slice(2,6).toUpperCase();
 }
 
-/* ===================================
-   4. EFEK ANIMASI
-   =================================== */
+/* OPENING: SELESAI LALU TAMPIL LOGIN */
+function startOpening(){
+ showScreen("loginScreen");
+ const intro=$("introScreen");
+ setTimeout(()=>{
+  intro.classList.add("intro-hide");
+  setTimeout(()=>intro.remove(),900);
+ },3000);
+}
+
+/* EFEK ANIMASI */
 function animateQuestion(){
- const box=document.querySelector(".question-box");
- if(!box)return;
- box.classList.remove("question-enter");
- void box.offsetWidth;
- box.classList.add("question-enter");
+ const box=document.querySelector(".question-box");if(!box)return;
+ box.classList.remove("question-enter");void box.offsetWidth;box.classList.add("question-enter");
 }
-
 function createConfetti(){
  const colors=["#9275ff","#e8bd69","#55d6a2","#ff6b83","#ffffff"];
-
  for(let i=0;i<65;i++){
-  const piece=document.createElement("div");
-  piece.className="confetti-piece";
+  const piece=document.createElement("div");piece.className="confetti-piece";
   piece.style.left=Math.random()*100+"vw";
   piece.style.background=colors[Math.floor(Math.random()*colors.length)];
   piece.style.animationDuration=(2.5+Math.random()*3)+"s";
   piece.style.animationDelay=(Math.random()*.8)+"s";
-  piece.style.width=(6+Math.random()*7)+"px";
-  piece.style.height=(8+Math.random()*10)+"px";
+  piece.style.width=(6+Math.random()*7)+"px";piece.style.height=(8+Math.random()*10)+"px";
   piece.style.borderRadius=Math.random()>.5?"50%":"2px";
-
-  document.body.appendChild(piece);
-  setTimeout(()=>piece.remove(),6500);
+  document.body.appendChild(piece);setTimeout(()=>piece.remove(),6500);
  }
 }
 
-/* ===================================
-   5. KONEKSI SUPABASE
-   =================================== */
+/* KONEKSI SUPABASE */
 function apiHeaders(extra={}){
- return {
-  "apikey":SUPABASE_KEY,
-  "Authorization":"Bearer "+SUPABASE_KEY,
-  "Content-Type":"application/json",
-  ...extra
- };
+ return {"apikey":SUPABASE_KEY,"Authorization":"Bearer "+SUPABASE_KEY,"Content-Type":"application/json",...extra};
 }
-
 async function api(path,options={}){
  if(!configReady())throw new Error("Publishable Key belum diisi.");
-
- const response=await fetch(SUPABASE_URL+"/rest/v1/"+path,{
-  ...options,
-  headers:apiHeaders(options.headers||{})
- });
-
+ const response=await fetch(SUPABASE_URL+"/rest/v1/"+path,{...options,headers:apiHeaders(options.headers||{})});
  const body=await response.text();
-
  if(!response.ok)throw new Error(body||"Supabase request gagal.");
-
  return body?JSON.parse(body):null;
 }
 
-/* ===================================
-   6. LOGIN DAN SIMPAN PEMAIN
-   =================================== */
+/* LOGIN DAN SIMPAN PEMAIN */
 async function login(){
  const name=$("playerName").value.trim();
-
- if(!name){
-  showToast("Masukkan nama pemain terlebih dahulu.");
-  return;
- }
-
- if(!configReady()){
-  showToast("Masukkan Publishable Key Supabase.");
-  return;
- }
-
- const btn=$("loginBtn");
- btn.disabled=true;
- btn.textContent="MEMUAT...";
-
+ if(!name){showToast("Masukkan nama pemain terlebih dahulu.");return}
+ if(!configReady()){showToast("Masukkan Publishable Key Supabase.");return}
+ const btn=$("loginBtn");btn.disabled=true;btn.textContent="MEMUAT...";
  try{
-  const query="player_name=eq."+encodeURIComponent(name)+
-   "&select=player_code,player_name,score,xp,level,badges,completed_worlds,completed_world_ids&limit=1";
-
+  const query="player_name=eq."+encodeURIComponent(name)+"&select=player_code,player_name,score,xp,level,badges,completed_worlds,completed_world_ids&limit=1";
   const found=await api(TABLE+"?"+query);
-
   if(found.length){
    player=found[0];
-
-   if(!Array.isArray(player.completed_world_ids))
-    player.completed_world_ids=[];
-
-   player.completed_world_ids=player.completed_world_ids
-    .map(Number)
-    .filter(id=>worlds.some(w=>w.id===id));
-
+   player.completed_world_ids=normalizeWorldIds(player.completed_world_ids);
   }else{
-   player={
-    player_code:makePlayerCode(),
-    player_name:name,
-    score:0,
-    xp:0,
-    level:1,
-    badges:0,
-    completed_worlds:0,
-    completed_world_ids:[]
-   };
-
-   const inserted=await api(TABLE,{
-    method:"POST",
-    headers:{"Prefer":"return=representation"},
-    body:JSON.stringify(player)
-   });
-
+   player={player_code:makePlayerCode(),player_name:name,score:0,xp:0,level:1,badges:0,completed_worlds:0,completed_world_ids:[]};
+   const inserted=await api(TABLE,{method:"POST",headers:{"Prefer":"return=representation"},body:JSON.stringify(player)});
    if(inserted?.[0])player=inserted[0];
-
-   if(!Array.isArray(player.completed_world_ids))
-    player.completed_world_ids=[];
+   player.completed_world_ids=normalizeWorldIds(player.completed_world_ids);
   }
-
   localStorage.setItem("financeversePlayerCode",player.player_code);
   openDashboard();
-
- }catch(error){
-  console.error(error);
-  showToast("Gagal masuk: "+error.message);
-
- }finally{
-  btn.disabled=false;
-  btn.textContent="MULAI PETUALANGAN";
- }
+ }catch(error){console.error(error);showToast("Gagal masuk: "+error.message)}
+ finally{btn.disabled=false;btn.textContent="MULAI PETUALANGAN"}
 }
-
 async function savePlayer(){
  if(!player)return;
-
  player.completed_world_ids=completedIds();
  player.completed_worlds=player.completed_world_ids.length;
- player.level=calcLevel(player.xp);
- player.updated_at=new Date().toISOString();
-
- const filter="player_code=eq."+
- encodeURIComponent(player.player_code);
-
+ player.level=calcLevel(player.xp);player.updated_at=new Date().toISOString();
+ const filter="player_code=eq."+encodeURIComponent(player.player_code);
  await api(TABLE+"?"+filter,{
-  method:"PATCH",
-  headers:{"Prefer":"return=minimal"},
+  method:"PATCH",headers:{"Prefer":"return=minimal"},
   body:JSON.stringify({
-   score:Number(player.score||0),
-   xp:Number(player.xp||0),
-   level:Number(player.level||1),
+   score:Number(player.score||0),xp:Number(player.xp||0),level:Number(player.level||1),
    completed_worlds:Number(player.completed_worlds||0),
-   completed_world_ids:player.completed_world_ids,
-   updated_at:player.updated_at
+   completed_world_ids:player.completed_world_ids,updated_at:player.updated_at
   })
  });
 }
-
-async function restorePlayer(){
- const code=localStorage.getItem("financeversePlayerCode");
-
- if(!code||!configReady())return;
-
- try{
-  const rows=await api(TABLE+
-   "?player_code=eq."+encodeURIComponent(code)+
-   "&select=player_code,player_name,score,xp,level,badges,completed_worlds,completed_world_ids&limit=1");
-
-  if(rows.length){
-   player=rows[0];
-
-   if(!Array.isArray(player.completed_world_ids))
-    player.completed_world_ids=[];
-
-   player.completed_world_ids=player.completed_world_ids
-    .map(Number)
-    .filter(id=>worlds.some(w=>w.id===id));
-
-   openDashboard();
-  }
-
- }catch(error){
-  console.warn("Auto restore:",error);
- }
-}
-
 function logout(){
- clearInterval(timerInterval);
- player=null;
- localStorage.removeItem("financeversePlayerCode");
- showScreen("loginScreen");
+ clearInterval(timerInterval);player=null;
+ localStorage.removeItem("financeversePlayerCode");showScreen("loginScreen");
 }
 
-/* ===================================
-   7. DASHBOARD DAN LEADERBOARD
-   =================================== */
+/* DASHBOARD DAN LEADERBOARD */
 function openDashboard(){
  if(!player)return;
-
  $("welcomeName").textContent=player.player_name;
  $("statScore").textContent=Number(player.score||0).toLocaleString("id-ID");
  $("statXP").textContent=Number(player.xp||0).toLocaleString("id-ID");
  $("statLevel").textContent=calcLevel(player.xp);
-
  const done=completedIds().length;
-
- $("statDone").textContent=done+"/5";
- $("overallProgress").style.width=(done/5*100)+"%";
-
- renderWorlds();
- showScreen("dashboard");
- loadLeaderboard();
+ $("statDone").textContent=done+"/5";$("overallProgress").style.width=(done/5*100)+"%";
+ renderWorlds();showScreen("dashboard");loadLeaderboard();
 }
-
 function renderWorlds(){
- const grid=$("worldGrid");
- grid.innerHTML="";
-
+ const grid=$("worldGrid");grid.innerHTML="";
  worlds.forEach((world,index)=>{
   const done=completedIds().includes(world.id);
-
-  const card=document.createElement("div");
-  card.className="world-card";
-  card.style.animationDelay=(index*.1)+"s";
-
+  const card=document.createElement("div");card.className="world-card";card.style.animationDelay=(index*.1)+"s";
   card.innerHTML=`
    <div class="world-icon">${world.icon}</div>
-   <div>
-    <div class="eyebrow">WORLD ${String(world.id).padStart(2,"0")}</div>
-    <h3>${world.title}</h3>
-   </div>
+   <div><div class="eyebrow">WORLD ${String(world.id).padStart(2,"0")}</div><h3>${world.title}</h3></div>
    <p>${world.description}</p>
-   <div class="world-meta">
-    <span class="pill">10 Pertanyaan</span>
-    <span class="pill">30 Detik / Soal</span>
-    <span class="pill">3 Nyawa</span>
-    ${done?'<span class="pill done">✓ Selesai</span>':''}
-   </div>
-   <div class="card-bottom">
-    <span class="small">${done?"Sudah ditaklukkan":"Siap dimainkan"}</span>
-    <button class="btn ${done?"secondary":"gold"}">
-     ${done?"MAIN ULANG":"MULAI WORLD"}
-    </button>
-   </div>`;
-
-  card.querySelector("button").addEventListener("click",()=>{
-   startWorld(world.id);
-  });
-
+   <div class="world-meta"><span class="pill">10 Pertanyaan</span><span class="pill">30 Detik / Soal</span><span class="pill">3 Nyawa</span>${done?'<span class="pill done">✓ Selesai</span>':''}</div>
+   <div class="card-bottom"><span class="small">${done?"Sudah ditaklukkan":"Siap dimainkan"}</span><button class="btn ${done?"secondary":"gold"}">${done?"MAIN ULANG":"MULAI WORLD"}</button></div>`;
+  card.querySelector("button").addEventListener("click",()=>startWorld(world.id));
   grid.appendChild(card);
  });
 }
-
 async function loadLeaderboard(){
  $("leaderboardList").textContent="Memuat leaderboard...";
-
  try{
-  const rows=await api(TABLE+
-   "?select=player_name,score,xp&order=score.desc&limit=10");
-
-  if(!rows.length){
-   $("leaderboardList").textContent="Belum ada pemain.";
-   return;
-  }
-
+  const rows=await api(TABLE+"?select=player_name,score,xp&order=score.desc&limit=10");
+  if(!rows.length){$("leaderboardList").textContent="Belum ada pemain.";return}
   $("leaderboardList").innerHTML=rows.map((p,i)=>`
    <div class="leader-row" style="animation-delay:${i*.06}s">
     <div><span class="rank">#${i+1}</span>${escapeHTML(p.player_name||"Player")}</div>
-    <div><b>${Number(p.score||0).toLocaleString("id-ID")}</b>
-    <span class="small">score</span></div>
-   </div>
-  `).join("");
-
- }catch(error){
-  $("leaderboardList").textContent="Leaderboard belum dapat dimuat.";
- }
+    <div><b>${Number(p.score||0).toLocaleString("id-ID")}</b> <span class="small">score</span></div>
+   </div>`).join("");
+ }catch(error){$("leaderboardList").textContent="Leaderboard belum dapat dimuat."}
 }
 
-/* ===================================
-   8. GAMEPLAY
-   =================================== */
+/* GAMEPLAY */
 function startWorld(id){
- currentWorld=worlds.find(w=>w.id===Number(id));
- if(!currentWorld)return;
-
- clearInterval(timerInterval);
-
- questionIndex=0;
- lives=3;
- runScore=0;
- runFinished=false;
- answered=false;
-
- $("gameWorldNumber").textContent=
-  "WORLD "+String(currentWorld.id).padStart(2,"0");
-
+ currentWorld=worlds.find(w=>w.id===Number(id));if(!currentWorld)return;
+ clearInterval(timerInterval);questionIndex=0;lives=3;runScore=0;runFinished=false;answered=false;
+ $("gameWorldNumber").textContent="WORLD "+String(currentWorld.id).padStart(2,"0");
  $("gameWorldTitle").textContent=currentWorld.title;
- $("lives").textContent=lives;
- $("runScore").textContent=runScore;
-
- showScreen("gameScreen");
- showQuestion();
+ $("lives").textContent=lives;$("runScore").textContent=runScore;
+ showScreen("gameScreen");showQuestion();
 }
-
 function showQuestion(){
  clearInterval(timerInterval);
-
  if(!currentWorld||runFinished)return;
- if(lives<=0){
-  finishWorld(false);
-  return;
- }
-
- answered=false;
- timeLeft=30;
-
+ if(lives<=0){finishWorld(false);return}
+ answered=false;timeLeft=30;
  const q=currentWorld.questions[questionIndex];
-
- $("questionCount").textContent=
-  "PERTANYAAN "+(questionIndex+1)+" / "+currentWorld.questions.length;
-
- $("questionText").textContent=q[0];
- $("feedback").className="feedback hidden";
- $("feedback").textContent="";
- $("nextBtn").classList.add("hidden");
- $("options").innerHTML="";
-
+ $("questionCount").textContent="PERTANYAAN "+(questionIndex+1)+" / "+currentWorld.questions.length;
+ $("questionText").textContent=q[0];$("feedback").className="feedback hidden";$("feedback").textContent="";
+ $("nextBtn").classList.add("hidden");$("options").innerHTML="";
  q[1].forEach((option,index)=>{
-  const button=document.createElement("button");
-  button.className="option";
+  const button=document.createElement("button");button.className="option";
   button.style.animationDelay=(index*.07)+"s";
   button.textContent=String.fromCharCode(65+index)+". "+option;
-
-  button.addEventListener("click",()=>{
-   answerQuestion(index);
-  });
-
-  $("options").appendChild(button);
+  button.addEventListener("click",()=>answerQuestion(index));$("options").appendChild(button);
  });
-
- animateQuestion();
- updateTimer();
-
+ animateQuestion();updateTimer();
  timerInterval=setInterval(()=>{
-  timeLeft--;
-  updateTimer();
-
-  if(timeLeft<=0){
-   clearInterval(timerInterval);
-   answerQuestion(-1);
-  }
+  timeLeft--;updateTimer();
+  if(timeLeft<=0){clearInterval(timerInterval);answerQuestion(-1)}
  },1000);
 }
-
 function updateTimer(){
- $("timerText").textContent=timeLeft;
- $("timerFill").style.width=(timeLeft/30*100)+"%";
-
- $("timerFill").style.background=
-  timeLeft<=10?"var(--red)":
-  timeLeft<=18?"var(--gold)":
-  "var(--green)";
-
+ $("timerText").textContent=timeLeft;$("timerFill").style.width=(timeLeft/30*100)+"%";
+ $("timerFill").style.background=timeLeft<=10?"var(--red)":timeLeft<=18?"var(--gold)":"var(--green)";
  $("timerFill").classList.toggle("danger",timeLeft<=10);
 }
-
 function answerQuestion(selected){
  if(answered||runFinished)return;
-
- answered=true;
- clearInterval(timerInterval);
-
- const q=currentWorld.questions[questionIndex];
- const buttons=[...$("options").children];
-
+ answered=true;clearInterval(timerInterval);
+ const q=currentWorld.questions[questionIndex],buttons=[...$("options").children];
  buttons.forEach((button,index)=>{
-  button.disabled=true;
-
-  if(index===q[2])
-   button.classList.add("correct");
-
-  if(index===selected&&selected!==q[2])
-   button.classList.add("wrong");
+  button.disabled=true;if(index===q[2])button.classList.add("correct");
+  if(index===selected&&selected!==q[2])button.classList.add("wrong");
  });
-
- const feedback=$("feedback");
- feedback.classList.remove("hidden");
-
+ const feedback=$("feedback");feedback.classList.remove("hidden");
  if(selected===q[2]){
-  runScore+=10;
-  $("runScore").textContent=runScore;
-
-  feedback.className="feedback good";
-  feedback.innerHTML=
-   "<b>✓ Jawaban benar! +10 poin</b><br>"+
-   escapeHTML(q[3]);
-
+  runScore+=10;$("runScore").textContent=runScore;
+  feedback.className="feedback good";feedback.innerHTML="<b>✓ Jawaban benar! +10 poin</b><br>"+escapeHTML(q[3]);
  }else{
-  lives--;
-  $("lives").textContent=lives;
-
-  feedback.className="feedback bad";
-
-  feedback.innerHTML="<b>"+
-   (selected===-1?"Waktu habis!":"Jawaban belum tepat.")+
-   "</b><br>Jawaban benar: "+
-   escapeHTML(q[1][q[2]])+
-   "<br>"+escapeHTML(q[3])+
-   "<br><br>Sisa nyawa: "+lives;
+  lives--;$("lives").textContent=lives;feedback.className="feedback bad";
+  feedback.innerHTML="<b>"+(selected===-1?"Waktu habis!":"Jawaban belum tepat.")+"</b><br>Jawaban benar: "+escapeHTML(q[1][q[2]])+"<br>"+escapeHTML(q[3])+"<br><br>Sisa nyawa: "+lives;
  }
-
- $("nextBtn").textContent=
-  lives<=0?"LIHAT HASIL":"SOAL BERIKUTNYA";
-
+ $("nextBtn").textContent=lives<=0?"LIHAT HASIL":"SOAL BERIKUTNYA";
  $("nextBtn").classList.remove("hidden");
 }
-
 function nextQuestion(){
  if(!answered)return;
-
- if(lives<=0){
-  finishWorld(false);
-  return;
- }
-
+ if(lives<=0){finishWorld(false);return}
  questionIndex++;
-
- if(questionIndex>=currentWorld.questions.length){
-  finishWorld(true);
- }else{
-  showQuestion();
- }
+ if(questionIndex>=currentWorld.questions.length)finishWorld(true);
+ else showQuestion();
 }
 
-/* ===================================
-   9. HASIL DAN PENYIMPANAN PROGRES
-   =================================== */
+/* HASIL DAN PENYIMPANAN PROGRES */
 async function finishWorld(success){
- if(runFinished)return;
-
- runFinished=true;
- clearInterval(timerInterval);
-
- if(!success){
-  showResult(false,false,false);
-  return;
- }
-
+ if(runFinished)return;runFinished=true;clearInterval(timerInterval);
+ if(!success){showResult(false,false,false);return}
  const alreadyDone=completedIds().includes(currentWorld.id);
-
- if(alreadyDone){
-  showResult(true,true,false);
-  return;
- }
-
- const oldIds=completedIds();
- const oldScore=Number(player.score||0);
- const oldXP=Number(player.xp||0);
-
+ if(alreadyDone){showResult(true,true,false);return}
+ const oldIds=completedIds(),oldScore=Number(player.score||0),oldXP=Number(player.xp||0);
  player.completed_world_ids=[...oldIds,currentWorld.id];
- player.score=oldScore+runScore;
- player.xp=oldXP+runScore;
- player.level=calcLevel(player.xp);
-
- try{
-  await savePlayer();
-  showResult(true,false,false);
-
- }catch(error){
-  console.error(error);
-
-  player.completed_world_ids=oldIds;
-  player.score=oldScore;
-  player.xp=oldXP;
-  player.level=calcLevel(player.xp);
-
-  showResult(true,false,true);
+ player.score=oldScore+runScore;player.xp=oldXP+runScore;player.level=calcLevel(player.xp);
+ try{await savePlayer();showResult(true,false,false)}
+ catch(error){
+  console.error(error);player.completed_world_ids=oldIds;player.score=oldScore;player.xp=oldXP;
+  player.level=calcLevel(player.xp);showResult(true,false,true);
  }
 }
-
 function showResult(success,alreadyDone=false,saveError=false){
  showScreen("resultScreen");
-
  if(success){
-  $("resultIcon").textContent="🏆";
-  $("resultEyebrow").textContent="WORLD COMPLETED";
-  $("resultTitle").textContent="Luar biasa!";
-
-  $("resultDescription").textContent=
-   "Kamu berhasil menyelesaikan "+currentWorld.title+".";
-
+  $("resultIcon").textContent="🏆";$("resultEyebrow").textContent="WORLD COMPLETED";$("resultTitle").textContent="Luar biasa!";
+  $("resultDescription").textContent="Kamu berhasil menyelesaikan "+currentWorld.title+".";
   if(saveError){
    $("resultScore").textContent="BELUM TERSIMPAN";
-
-   $("resultExtra").textContent=
-    "World berhasil diselesaikan, tetapi penyimpanan gagal. Periksa koneksi dan coba ulangi world.";
-
+   $("resultExtra").textContent="World berhasil diselesaikan, tetapi penyimpanan gagal. Periksa koneksi dan coba ulangi world.";
   }else if(alreadyDone){
    $("resultScore").textContent="+"+runScore+" POIN LATIHAN";
-
-   $("resultExtra").textContent=
-    "World ini sudah pernah diselesaikan. Mode latihan tidak menambah skor atau XP.";
-
+   $("resultExtra").textContent="World ini sudah pernah diselesaikan. Mode latihan tidak menambah skor atau XP.";
   }else{
    $("resultScore").textContent="+"+runScore+" XP";
-
-   $("resultExtra").textContent=
-    "Skor dan XP berhasil ditambahkan ke akunmu!";
-
-   createConfetti();
+   $("resultExtra").textContent="Skor dan XP berhasil ditambahkan ke akunmu!";createConfetti();
   }
-
  }else{
-  $("resultIcon").textContent="💔";
-  $("resultEyebrow").textContent="MISSION FAILED";
-  $("resultTitle").textContent="Jangan menyerah!";
-
-  $("resultDescription").textContent=
-   "Nyawamu habis sebelum menyelesaikan "+currentWorld.title+".";
-
+  $("resultIcon").textContent="💔";$("resultEyebrow").textContent="MISSION FAILED";$("resultTitle").textContent="Jangan menyerah!";
+  $("resultDescription").textContent="Nyawamu habis sebelum menyelesaikan "+currentWorld.title+".";
   $("resultScore").textContent="0 XP";
-
-  $("resultExtra").textContent=
-   "Pelajari pembahasan jawaban, lalu coba ulangi world ini. Skor hanya diberikan setelah berhasil menyelesaikan semua soal.";
+  $("resultExtra").textContent="Pelajari pembahasan jawaban, lalu coba ulangi world ini. Skor hanya diberikan setelah berhasil menyelesaikan semua soal.";
  }
 }
-
-function replayCurrent(){
- if(currentWorld)startWorld(currentWorld.id);
-}
-
+function replayCurrent(){if(currentWorld)startWorld(currentWorld.id)}
 function backToDashboard(){
- clearInterval(timerInterval);
- runFinished=true;
-
- if(player)openDashboard();
- else showScreen("loginScreen");
+ clearInterval(timerInterval);runFinished=true;
+ if(player)openDashboard();else showScreen("loginScreen");
 }
 
-/* ===================================
-   10. INISIALISASI APLIKASI
-   =================================== */
+/* INISIALISASI */
 window.addEventListener("load",()=>{
- if(!configReady()){
-  showToast("Isi Publishable Key Supabase terlebih dahulu.");
- }
-
- restorePlayer();
+ startOpening();
+ if(!configReady())setTimeout(()=>showToast("Isi Publishable Key Supabase terlebih dahulu."),3300);
 });
 </script>
-
 </body>
 </html>
